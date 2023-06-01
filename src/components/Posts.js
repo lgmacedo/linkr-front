@@ -1,21 +1,22 @@
 import styled from "styled-components";
 
-export default function Posts(){
+export default function Posts({post}){
+  const { image, userId, username, likescount, likedBy, link, picture, title, description, desc } = post;
     return (
         <ContainerPost>
         <LeftSidePost>
-          <img src="https://s2.glbimg.com/4Ek8CnZSuYyyvaNQEPPiX_d-faA=/e.glbimg.com/og/ed/f/original/2017/11/24/gali1.jpg" alt="profile" />
+          <img src={picture} alt="profile pic" />
         </LeftSidePost>
         <RightSidePost>
-            <Name>Juvenal Juvêncio</Name>
-            <Description>Muito maneiro esse tutorial de Material UI com React, deem uma olhada!</Description>
-            <Link>
+            <Name>{username}</Name>
+            <Description>{description}</Description>
+            <Link href={link} target="_blank">
                 <LinkInfo>
-                    <p class="title">Como aplicar o Material UI em um projeto React</p>
-                    <p class="desc">Hey! I have moved this tutorial to my personal blog. Same content, new location. Sorry about making you click through to another page.</p>
-                    <p class="url">https://medium.com/@pshrmn/a-simple-react-router</p>
+                    <p className="title">{title}</p>
+                    <p className="desc">{desc}</p>
+                    <p className="url">{link}</p>
                 </LinkInfo>
-                <LinkImg src="https://cdn.thenewstack.io/media/2022/06/1270f621-600b72f9-react-1024x680-1.png"></LinkImg>
+                <LinkImg src={image} alt={title}></LinkImg>
             </Link>
         </RightSidePost>
         </ContainerPost>
