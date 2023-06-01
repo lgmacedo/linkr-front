@@ -1,29 +1,6 @@
 import styled from "styled-components";
 
-export default function Posts({post}){
-  const { image, userId, username, likescount, likedBy, link, picture, title, description, desc } = post;
-    return (
-        <ContainerPost>
-        <LeftSidePost>
-          <img src={picture} alt="profile pic" />
-        </LeftSidePost>
-        <RightSidePost>
-            <Name>{username}</Name>
-            <Description>{description}</Description>
-            <Link href={link} target="_blank">
-                <LinkInfo>
-                    <p className="title">{title}</p>
-                    <p className="desc">{desc}</p>
-                    <p className="url">{link}</p>
-                </LinkInfo>
-                <LinkImg src={image} alt={title}></LinkImg>
-            </Link>
-        </RightSidePost>
-        </ContainerPost>
-    )
-}
-
-const ContainerPost = styled.div`
+export const ContainerPost = styled.div`
     width: 611px;
     min-height:276px;
     background-color: #171717;
@@ -39,7 +16,7 @@ const ContainerPost = styled.div`
   }
 `
 
-const LeftSidePost = styled.div`
+export const LeftSidePost = styled.div`
 display:flex;
 padding:20px 0 20px 20px;
 img {
@@ -55,7 +32,7 @@ img {
   }
 `
 
-const RightSidePost = styled.div`
+export const RightSidePost = styled.div`
     display:flex;
     flex-direction:column;
     padding:10px;
@@ -66,20 +43,20 @@ const RightSidePost = styled.div`
     }
 `
 
-const Name = styled.p`
+export const Name = styled.p`
     margin: 15px 0 0px 0;
     font-size:19px;
     line-height: 23px;
     color: #fff;
 `
 
-const Description = styled.p`
+export const Description = styled.p`
     font-size:17px;
     line-height: 20px;
     color:#b7b7b7;
 `
 
-const Link = styled.a`
+export const Link = styled.a`
     display:flex;
     align-items: center;
     width:100%;
@@ -94,7 +71,7 @@ const Link = styled.a`
   }
 `;
 
-const LinkInfo = styled.div`
+export const LinkInfo = styled.div`
 display: flex;
 flex-direction: column;
 padding:20px 0 25px 25px;
@@ -139,7 +116,7 @@ p {
   }
 `
 
-const LinkImg = styled.img`
+export const LinkImg = styled.img`
     width:155px;
     height:155px;
     object-fit: cover;
