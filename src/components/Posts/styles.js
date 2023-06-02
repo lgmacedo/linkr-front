@@ -1,28 +1,6 @@
 import styled from "styled-components";
 
-export default function Posts(){
-    return (
-        <ContainerPost>
-        <LeftSidePost>
-          <img src="https://s2.glbimg.com/4Ek8CnZSuYyyvaNQEPPiX_d-faA=/e.glbimg.com/og/ed/f/original/2017/11/24/gali1.jpg" alt="profile" />
-        </LeftSidePost>
-        <RightSidePost>
-            <Name>Juvenal Juvêncio</Name>
-            <Description>Muito maneiro esse tutorial de Material UI com React, deem uma olhada!</Description>
-            <Link>
-                <LinkInfo>
-                    <p class="title">Como aplicar o Material UI em um projeto React</p>
-                    <p class="desc">Hey! I have moved this tutorial to my personal blog. Same content, new location. Sorry about making you click through to another page.</p>
-                    <p class="url">https://medium.com/@pshrmn/a-simple-react-router</p>
-                </LinkInfo>
-                <LinkImg src="https://cdn.thenewstack.io/media/2022/06/1270f621-600b72f9-react-1024x680-1.png"></LinkImg>
-            </Link>
-        </RightSidePost>
-        </ContainerPost>
-    )
-}
-
-const ContainerPost = styled.div`
+export const ContainerPost = styled.div`
     width: 611px;
     min-height:276px;
     background-color: #171717;
@@ -38,7 +16,7 @@ const ContainerPost = styled.div`
   }
 `
 
-const LeftSidePost = styled.div`
+export const LeftSidePost = styled.div`
 display:flex;
 padding:20px 0 20px 20px;
 img {
@@ -54,7 +32,7 @@ img {
   }
 `
 
-const RightSidePost = styled.div`
+export const RightSidePost = styled.div`
     display:flex;
     flex-direction:column;
     padding:10px;
@@ -65,20 +43,20 @@ const RightSidePost = styled.div`
     }
 `
 
-const Name = styled.p`
+export const Name = styled.p`
     margin: 15px 0 0px 0;
     font-size:19px;
     line-height: 23px;
     color: #fff;
 `
 
-const Description = styled.p`
+export const Description = styled.p`
     font-size:17px;
     line-height: 20px;
     color:#b7b7b7;
 `
 
-const Link = styled.a`
+export const Link = styled.a`
     display:flex;
     align-items: center;
     width:100%;
@@ -93,7 +71,7 @@ const Link = styled.a`
   }
 `;
 
-const LinkInfo = styled.div`
+export const LinkInfo = styled.div`
 display: flex;
 flex-direction: column;
 padding:20px 0 25px 25px;
@@ -138,7 +116,7 @@ p {
   }
 `
 
-const LinkImg = styled.img`
+export const LinkImg = styled.img`
     width:155px;
     height:155px;
     object-fit: cover;
