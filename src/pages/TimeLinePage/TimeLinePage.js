@@ -3,16 +3,15 @@ import Header from "../../components/Header";
 import Posts from "../../components/Posts/Posts";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../../contexts/UserContext";
+import { UserContext } from "../../contexts/UserContext";
 import { ContainerButton, CreateButton, CreatePost, Description, LeftSide, NoPosts, RightSide, TimeLineContainer, Title, Link } from "./styles";
   
   export default function TimeLinePage() {
-    const [user, setUser] = useContext(UserContext);
+    const { user } = useContext(UserContext);
     const [timeline, setTimeline] = useState([]);
     const [loading, setLoading] = useState(false);
     const [form, setForm] = useState({link: "", description: ""});
     const [loadingForm, setLoadingForm] = useState(false);
-    const navigate = useNavigate();
 
     const api = axios.create({
       baseURL: process.env.REACT_APP_API_URL,
@@ -20,20 +19,9 @@ import { ContainerButton, CreateButton, CreatePost, Description, LeftSide, NoPos
 
     useEffect(() => {
       setLoading(true);
-
-      const userToken = localStorage.getItem("user");
-      if (userToken === null){
-        navigate("/");
-      } else {
-        setUser(JSON.parse(userToken));
-      }
+      getPosts()
     }, [])
 
-    useEffect(() => {
-      if (user.token) {
-        getPosts();
-      }
-    }, [user]);
 
     const config = {
       headers: {
@@ -41,7 +29,6 @@ import { ContainerButton, CreateButton, CreatePost, Description, LeftSide, NoPos
       }
     };
 
-    console.log(user.token);
 
     function getPosts(){
       const promise = api.get("/timeline", config);

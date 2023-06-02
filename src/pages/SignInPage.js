@@ -2,8 +2,11 @@ import axios from "axios";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { UserContext } from "../contexts/UserContext";
+import { useContext } from "react";
 
 export default function SignInPage() {
+  const { setUser } = useContext(UserContext);
   const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
   });
@@ -39,6 +42,7 @@ export default function SignInPage() {
 
   function loginSuccess(res) {
     localStorage.setItem("user", JSON.stringify(res.data));
+    setUser(res.data);
     navigate("/timeline");
   }
 
