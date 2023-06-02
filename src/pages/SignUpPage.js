@@ -57,6 +57,7 @@ export default function SignInPage() {
       <SignUpContainer buttonEnabled={buttonEnabled}>
         <form onSubmit={signup}>
           <input
+            data-test="email"
             placeholder="e-mail"
             type="text"
             name="email"
@@ -64,6 +65,7 @@ export default function SignInPage() {
             onChange={(e) => handleChange(e)}
           />
           <input
+            data-test="password"
             placeholder="password"
             type="password"
             name="password"
@@ -71,6 +73,7 @@ export default function SignInPage() {
             onChange={(e) => handleChange(e)}
           />
           <input
+            data-test="username"
             placeholder="username"
             type="text"
             name="username"
@@ -78,17 +81,18 @@ export default function SignInPage() {
             onChange={(e) => handleChange(e)}
           />
           <input
+            data-test="picture-url"
             placeholder="picture url"
             type="text"
             name="picture"
             value={form.picture}
             onChange={(e) => handleChange(e)}
           />
-          <button disabled={buttonEnabled ? false : true} type="Submit">
+          <button data-test="sign-up-btn" disabled={buttonEnabled ? false : true} type="Submit">
             Sign Up
           </button>
         </form>
-        <Link to="/">Switch back to log in</Link>
+        <Link data-test="login-link" to="/">Switch back to log in</Link>
       </SignUpContainer>
     </SignUpPageContainer>
   );
