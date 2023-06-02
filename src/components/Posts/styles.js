@@ -69,7 +69,6 @@ export const Link = styled.a`
     width: 100%;
     @media (max-width: 420px) {
      width:90%;
-     height:115px;
   }
 `;
 
@@ -82,28 +81,34 @@ width:70%;
 p {
     font-family: 'Lato', sans-serif;
     font-weight: 400;
+    overflow:hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 .title {
     font-weight: 400;
     color:#cecece;
     font-size:16px;
     line-height: 19px;
+    height:37px;
 }
 .desc {
     font-weight: 400;
     color:#9B9595;
     font-size:11px;
     line-height: 13px;
+    height:39px;
 }
 .url {
     font-weight: 400;
     color:#CECECE;
     font-size:11px;
     line-height: 13px;
+    height:25px;
 }
 @media (max-width: 611px) {
-    padding:8px;
-    gap:5px;
+    height:100%;
     .title {
       font-size: 11px;
       line-height: 13px;
@@ -125,7 +130,7 @@ export const LinkImg = styled.img`
     object-fit: cover;
     border-radius: 0px 12px 13px 0px;
     @media (max-width: 420px) {
-     width:90px;
-     height:115px;
+     width:30%;
+     height:100%;
   }
 `
