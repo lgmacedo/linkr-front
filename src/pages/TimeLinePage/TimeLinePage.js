@@ -37,7 +37,7 @@ import { ContainerButton, CreateButton, CreatePost, Description, LeftSide, NoPos
     };
 
     function getPosts(){
-      const promise = api.get("/timeline", config);
+      const promise = api.get("/timeline" ,config);
       promise.then((res) => {
       setLoading(false);
       setTimeline(res.data);
@@ -72,7 +72,7 @@ import { ContainerButton, CreateButton, CreatePost, Description, LeftSide, NoPos
       <Title>timeline</Title>
       <CreatePost data-test="publish-box">
         <LeftSide>
-          <img src="" alt="profile" />
+          <img src={user.picture} alt="profile" />
         </LeftSide>
         <RightSide>
           <p>What are you going to share today?</p>

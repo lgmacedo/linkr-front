@@ -1,11 +1,15 @@
 import styled from "styled-components";
+import UserContext from "../contexts/UserContext";
+import { useContext } from "react";
 
 export default function Header(){
+    const [user] = useContext(UserContext);
+
     return (
         <ContainerHeader>
             <Logo>linkr</Logo>
             <ProfileContainer>
-            <ProfilePicture src="https://s2.glbimg.com/4Ek8CnZSuYyyvaNQEPPiX_d-faA=/e.glbimg.com/og/ed/f/original/2017/11/24/gali1.jpg"></ProfilePicture>
+            <ProfilePicture src={user.picture}></ProfilePicture>
             </ProfileContainer>
         </ContainerHeader>
     )
