@@ -26,9 +26,14 @@ import { ContainerButton, CreateButton, CreatePost, Description, LeftSide, NoPos
         navigate("/");
       } else {
         setUser(JSON.parse(userToken));
-        getPosts();
       }
     }, [])
+
+    useEffect(() => {
+      if (user.token) {
+        getPosts();
+      }
+    }, [user]);
 
     const config = {
       headers: {
@@ -36,8 +41,10 @@ import { ContainerButton, CreateButton, CreatePost, Description, LeftSide, NoPos
       }
     };
 
+    console.log(user.token);
+
     function getPosts(){
-      const promise = api.get("/timeline" ,config);
+      const promise = api.get("/timeline", config);
       promise.then((res) => {
       setLoading(false);
       setTimeline(res.data);
