@@ -7,6 +7,10 @@ const GlobalStyle = createGlobalStyle`
     body {
         background-color: #333333;
     }
+    a {
+        text-decoration: none;
+        outline: none;
+    }
     @media (max-width: 420px) {
         *{
             -ms-overflow-style: none;
