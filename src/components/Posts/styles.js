@@ -23,6 +23,7 @@ img {
   width:50px;
   height:50px;
   border-radius: 27px;
+  object-fit: cover;
 }
 @media (max-width: 420px) {
     img {
