@@ -43,4 +43,5 @@ const ProfilePicture = styled.img`
     width:53px;
     height:53px;
     border-radius: 27px;
+    object-fit: cover;
 `

@@ -2,7 +2,6 @@ import axios from "axios";
 import Header from "../../components/Header";
 import Posts from "../../components/Posts/Posts";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import { ContainerButton, CreateButton, CreatePost, Description, LeftSide, NoPosts, RightSide, TimeLineContainer, Title, Link } from "./styles";
   
