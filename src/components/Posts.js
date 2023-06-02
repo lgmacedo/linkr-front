@@ -5,6 +5,8 @@ export default function Posts(){
         <ContainerPost>
         <LeftSidePost>
           <img src="https://s2.glbimg.com/4Ek8CnZSuYyyvaNQEPPiX_d-faA=/e.glbimg.com/og/ed/f/original/2017/11/24/gali1.jpg" alt="profile" />
+          <ion-icon name="heart-outline"></ion-icon>
+          <p>30 likes</p>
         </LeftSidePost>
         <RightSidePost>
             <Name>Juvenal Juvêncio</Name>
@@ -32,19 +34,35 @@ const ContainerPost = styled.div`
     padding:5px 5px 10px;
     gap:5px;
     @media (max-width: 420px) {
-     width:100%;
-     min-height:232px;
-     border-radius: 0;
-  }
+      width:100%;
+      min-height:232px;
+      border-radius: 0;
+    }
 `
 
 const LeftSidePost = styled.div`
 display:flex;
 padding:20px 0 20px 20px;
+flex-direction: column;
+align-items: center;
 img {
   width:50px;
   height:50px;
   border-radius: 27px;
+}
+ion-icon{
+  color: #FFFFFF;
+  font-size: 20px;
+  margin-top: 10px;
+}
+p{
+  font-family: 'Lato';
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  text-align: center;
+  margin-top: 5px;
+  color: #FFFFFF;
 }
 @media (max-width: 420px) {
     img {

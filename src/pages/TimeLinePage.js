@@ -42,7 +42,7 @@ const api = axios.create({
     align-items: center;
     gap:20px;
     @media (max-width: 420px) {
-      margin-top:100px;
+      margin-top: 30px;
   }
   `;
   
