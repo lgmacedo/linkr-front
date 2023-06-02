@@ -50,13 +50,14 @@ export default function Header() {
           <SlArrowDown onClick={toggleMenu} />
         )}
         <ProfilePicture
+          data-test="avatar"
           src={user.picture}
           onClick={toggleMenu}
           ref={profileRef}
         />
         {menuOpen && (
-          <Menu ref={menuRef}>
-            <button onClick={logout}>Logout</button>
+          <Menu data-test="menu" ref={menuRef}>
+            <button data-test="logout" onClick={logout}>Logout</button>
           </Menu>
         )}
       </ProfileContainer>
