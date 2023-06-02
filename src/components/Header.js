@@ -1,6 +1,10 @@
 import styled from "styled-components";
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 
 export default function Header(){
+    const { user } = useContext(UserContext);
+
     return (
         <><Container>
             <ContainerHeader>
@@ -11,7 +15,9 @@ export default function Header(){
                         <ion-icon name="search-sharp"></ion-icon>
                     </Input>
                 </Visible>
-                <ProfilePicture src="https://s2.glbimg.com/4Ek8CnZSuYyyvaNQEPPiX_d-faA=/e.glbimg.com/og/ed/f/original/2017/11/24/gali1.jpg"></ProfilePicture>
+                <ProfileContainer>
+                    <ProfilePicture src={user.picture}></ProfilePicture>
+                </ProfileContainer>
             </ContainerHeader>
         </Container>
         <Invisible>
@@ -27,6 +33,7 @@ const Container = styled.div`
     height: 100px;
     position: relative;
 `
+const ProfileContainer = styled.div``
 
 const ContainerHeader = styled.div`
     display: flex;

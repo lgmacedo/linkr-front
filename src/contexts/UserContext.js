@@ -1,5 +1,23 @@
-import { createContext } from "react";
+import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const UserContext = createContext();
+export const UserContext = createContext();
 
-export default UserContext;
+export default function UserProvider({ children }) {
+  const lsUser = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState(lsUser ? lsUser : {});
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if(lsUser === null){
+        navigate('/');
+    } else {
+        navigate('/timeline')
+    }
+  }, [])
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+}
