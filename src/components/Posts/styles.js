@@ -1,12 +1,14 @@
 import styled from "styled-components";
+
+/*
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from 'react-tooltip';
 
 export const StyledTooltip = styled(Tooltip)`
-  background-color: #333;
-  color: #fff;
+  background-color: red;
+  color: #FFFFFF;
   cursor: pointer;
-`;
+`;*/
 
 export const ContainerPost = styled.div`
     width: 611px;

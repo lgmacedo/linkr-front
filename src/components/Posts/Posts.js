@@ -4,6 +4,9 @@ import { UserContext } from "../../contexts/UserContext";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
+
 
 export default function Posts({ post }) {
   const { id, image, userId, username, likescount, likedBy, link, picture, title, description, desc } = post;
@@ -69,7 +72,37 @@ export default function Posts({ post }) {
       <LeftSidePost>
         <img src={picture} alt="profile pic" onClick={() => searchUserId(userId)} />
         <ion-icon name={like} style={{ color: color }} onClick={likePost}></ion-icon>
-        <p> {count} likes </p>
+        <p data-tip={likedBy ? `${likedBy.length} people` : "0 people"} data-for={`tooltip-${id}`}>
+          {count} likes
+        </p>
+        <Tooltip id={`tooltip-${id}`} place="bottom" effect="solid">
+          {likedBy && likedBy.length > 0 ? (
+            <p>
+              {likedBy.includes(user.username) ? "Você, " : ""}
+              {likedBy.map((name, index) => {
+                if (name !== user.username) {
+                  if (likedBy.length > 1) {
+                    if (index === 0) {
+                      return <span key={index}>{name}</span>;
+                    } else if (index === 1) {
+                      return <span key={index}> and {name}</span>;
+                    } else {
+                      return null;
+                    }
+                  } else {
+                    return <span key={index}>{name}</span>;
+                  }
+                }
+                return null;
+              })}
+              {" and other "}
+              {likedBy.length - 2}
+              {likedBy.length === 2 ? " person" : " people"}
+            </p>
+          ) : (
+            "0 people"
+          )}
+        </Tooltip>
       </LeftSidePost>
       <RightSidePost>
         <Name data-test="username"  onClick={() => searchUserId(userId)}>{username}</Name>
