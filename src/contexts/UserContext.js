@@ -6,6 +6,9 @@ export const UserContext = createContext();
 export default function UserProvider({ children }) {
   const lsUser = JSON.parse(localStorage.getItem("user"));
   const [user, setUser] = useState(lsUser ? lsUser : {});
+
+  const [userIdSearch, setUserIdSearch] = useState('')
+
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -16,7 +19,7 @@ export default function UserProvider({ children }) {
     }
   }, [])
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, userIdSearch, setUserIdSearch }}>
       {children}
     </UserContext.Provider>
   );
