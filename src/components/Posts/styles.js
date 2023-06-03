@@ -30,6 +30,7 @@ ion-icon{
   color: #FFFFFF;
   font-size: 20px;
   margin-top: 10px;
+  cursor: pointer;
 }
 p{
   font-family: 'Lato';
