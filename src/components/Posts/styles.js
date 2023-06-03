@@ -63,6 +63,7 @@ export const RightSidePost = styled.div`
     flex-direction:column;
     padding:10px;
     gap:10px;
+    width:100%;
     p {
         font-family: 'Lato', sans-serif;
         font-weight:400;
@@ -102,6 +103,7 @@ display: flex;
 flex-direction: column;
 padding:20px 0 25px 25px;
 gap:10px;
+width:70%;
 p {
     font-family: 'Lato', sans-serif;
     font-weight: 400;

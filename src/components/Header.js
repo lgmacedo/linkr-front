@@ -41,13 +41,13 @@ export default function Header() {
   }
 
   return (
-    <><Container>
+  <><Container>
       <ContainerHeader>
         <Logo>linkr</Logo>
         <Visible>
           <Input>
-              <input placeholder="Search for people" />
-              <ion-icon name="search-sharp"></ion-icon>
+            <input placeholder="Search for people" />
+            <ion-icon name="search-sharp"></ion-icon>
           </Input>
         </Visible>
         <ProfileContainer>
@@ -57,12 +57,13 @@ export default function Header() {
             <SlArrowDown onClick={toggleMenu} />
           )}
           <ProfilePicture
+            data-test="avatar"
             src={user.picture}
             onClick={toggleMenu}
             ref={profileRef} />
           {menuOpen && (
-            <Menu ref={menuRef}>
-              <button onClick={logout}>Logout</button>
+            <Menu data-test="menu" ref={menuRef}>
+              <button data-test="logout" onClick={logout}>Logout</button>
             </Menu>
           )}
         </ProfileContainer>
