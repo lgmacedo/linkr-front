@@ -1,5 +1,4 @@
-import { ContainerPost, Description, LeftSidePost, Link, LinkImg,
-  LinkInfo, Name, RightSidePost, StyledTooltip } from "./styles";
+import { ContainerPost, Description, LeftSidePost, Link, LinkImg, LinkInfo, Name, RightSidePost } from "./styles";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { useState, useEffect } from "react";
@@ -9,11 +8,10 @@ import { useNavigate } from "react-router";
 export default function Posts({ post }) {
   const { id, image, userId, username, likescount, likedBy, link, picture, title, description, desc } = post;
   const { user, setUserIdSearch } = useContext(UserContext);
-  const [like, setLike] = useState('');
-  const [color, setColor] = useState('');
+  const [like, setLike] = useState("");
+  const [color, setColor] = useState("");
   const [count, setCount] = useState(likescount);
-  const [tooltipContent, setTooltipContent] = useState('');
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
@@ -21,39 +19,29 @@ export default function Posts({ post }) {
 
   const config = {
     headers: {
-      Authorization: `Bearer ${user.token}`
-    }
+      Authorization: `Bearer ${user.token}`,
+    },
   };
+
+  useEffect(() => {  
+    const currentUserLiked = likedBy && likedBy.find((o) => o.name === user.username)
   
-  useEffect(() => {
-    console.log("likedBy:", likedBy);
-    console.log("user.username:", user.username);
-    console.log("userId:", userId);
-
-    const currentUserLiked = likedBy && Array.isArray(likedBy) && likedBy.find((obj) => obj.name === user.username);
-
     if (currentUserLiked) {
-      const likedByWithCurrentUser = likedBy.map((obj) => (obj.name === username ? 'Você' : obj.name));
-      const otherPeopleCount = likedByWithCurrentUser.length - 1;
-      const tooltipText = `${likedByWithCurrentUser.join(', ')} and other ${otherPeopleCount} people`;
       setColor("#AC0000");
-      setLike('heart');
-      setTooltipContent(tooltipText);
+      setLike("heart");
     } else if (likedBy && Array.isArray(likedBy)) {
-      const otherPeopleCount = likedBy.length - 1;
-      const tooltipText = `${likedBy.join(', ')} and other ${otherPeopleCount} people`;
-      setTooltipContent(tooltipText);
       setColor("#FFFFFF");
-      setLike("heart-outline");  
-    } else{
+      setLike("heart-outline");
+    } else {
       setColor("#FFFFFF");
-      setLike("heart-outline");  
+      setLike("heart-outline");
     }
-  }, [likedBy, username, user.username])
-
-    function likePost() {
+  }, [likedBy, user.username]);
+  
+  function likePost() {
     const postId = id;
-    const body = { postId, userId };
+    const ui = user.id
+    const body = { postId, ui };
     const promise = api.post("/like", body, config);
     promise
       .then((res) => {
@@ -68,33 +56,23 @@ export default function Posts({ post }) {
         }
       })
       .catch((err) => alert(err.message));
-  }
+    }
 
-  function searchUserId(id){
-    const obj = {userId, username, picture}
-    setUserIdSearch(obj)
-    navigate(`/user/${id}`)
+  function searchUserId(id) {
+    const obj = { userId, username, picture, likedBy, setColor, setLike };
+    setUserIdSearch(obj);
+    navigate(`/user/${id}`);
   }
 
   return (
     <ContainerPost data-test="post">
       <LeftSidePost>
-        <img src={picture} alt="profile pic" onClick={()=>searchUserId(userId)}/>
+        <img src={picture} alt="profile pic" onClick={() => searchUserId(userId)} />
         <ion-icon name={like} style={{ color: color }} onClick={likePost}></ion-icon>
-        <p data-tip={tooltipContent} data-for="likes-tooltip" data-test="likes">
-          {count} likes
-        </p>
-        <StyledTooltip
-          id="likes-tooltip"
-          place="top"
-          effect="solid"
-          delayShow={300}
-        >
-          <span>{tooltipContent}</span>
-        </StyledTooltip>
+        <p> {count} likes </p>
       </LeftSidePost>
       <RightSidePost>
-        <Name data-test="username">{username}</Name>
+        <Name data-test="username"  onClick={() => searchUserId(userId)}>{username}</Name>
         <Description data-test="description">{description}</Description>
         <Link data-test="link" href={link} target="_blank">
           <LinkInfo>

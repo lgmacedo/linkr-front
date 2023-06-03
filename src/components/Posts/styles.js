@@ -34,6 +34,7 @@ img {
   height:50px;
   border-radius: 27px;
   object-fit: cover;
+  cursor: pointer;
 }
 ion-icon{
   color: #FFFFFF;
@@ -75,6 +76,7 @@ export const Name = styled.p`
     font-size:19px;
     line-height: 23px;
     color: #fff;
+    cursor: pointer;
 `
 
 export const Description = styled.p`

@@ -23,6 +23,7 @@ export default function UserPage() {
     getPosts();
   }, []);
 
+
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
