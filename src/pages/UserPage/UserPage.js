@@ -32,6 +32,7 @@ export default function UserPage() {
   function getPosts() {
     const promise = api.get(`/user/${id}`, config);
     promise.then((res) => {
+      console.log("resposta api", res.data)
       setLoading(false);
       setTimeline(res.data);
     });
