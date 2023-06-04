@@ -6,11 +6,22 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
-import ReactHashtag from "@mdnm/react-hashtag";
-
+import reactStringReplace from "react-string-replace";
 
 export default function Posts({ post }) {
-  const { id, image, userId, username, likescount, likedBy, link, picture, title, description, desc } = post;
+  const {
+    id,
+    image,
+    userId,
+    username,
+    likescount,
+    likedBy,
+    link,
+    picture,
+    title,
+    description,
+    desc,
+  } = post;
   const { user, setUserIdSearch } = useContext(UserContext);
   const [like, setLike] = useState("");
   const [color, setColor] = useState("");
@@ -27,9 +38,10 @@ export default function Posts({ post }) {
     },
   };
 
-  useEffect(() => {  
-    const currentUserLiked = likedBy && likedBy.find((o) => o.name === user.username)
-  
+  useEffect(() => {
+    const currentUserLiked =
+      likedBy && likedBy.find((o) => o.name === user.username);
+
     if (currentUserLiked) {
       setColor("#AC0000");
       setLike("heart");
@@ -41,10 +53,10 @@ export default function Posts({ post }) {
       setLike("heart-outline");
     }
   }, [likedBy, user.username]);
-  
+
   function likePost() {
     const postId = id;
-    const ui = user.id
+    const ui = user.id;
     const body = { postId, ui };
     const promise = api.post("/like", body, config);
     promise
@@ -60,7 +72,7 @@ export default function Posts({ post }) {
         }
       })
       .catch((err) => alert(err.message));
-    }
+  }
 
   function searchUserId(id) {
     const obj = { userId, username, picture, likedBy, setColor, setLike };
@@ -71,9 +83,20 @@ export default function Posts({ post }) {
   return (
     <ContainerPost data-test="post">
       <LeftSidePost>
-        <img src={picture} alt="profile pic" onClick={() => searchUserId(userId)} />
-        <ion-icon name={like} style={{ color: color }} onClick={likePost}></ion-icon>
-        <p data-tip={likedBy ? `${likedBy.length} people` : "0 people"} data-for={`tooltip-${id}`}>
+        <img
+          src={picture}
+          alt="profile pic"
+          onClick={() => searchUserId(userId)}
+        />
+        <ion-icon
+          name={like}
+          style={{ color: color }}
+          onClick={likePost}
+        ></ion-icon>
+        <p
+          data-tip={likedBy ? `${likedBy.length} people` : "0 people"}
+          data-for={`tooltip-${id}`}
+        >
           {count} likes
         </p>
         <Tooltip id={`tooltip-${id}`} place="bottom" effect="solid">
@@ -106,21 +129,18 @@ export default function Posts({ post }) {
         </Tooltip>
       </LeftSidePost>
       <RightSidePost>
-        <Name data-test="username"  onClick={() => searchUserId(userId)}>{username}</Name>
-        <Description data-test="description"> <ReactHashtag
-            renderHashtag={(hashtagValue) => (
-              <Hashtag
-                onClick={() =>
-                  navigate(`/hashtag/${hashtagValue.replace("#", "")}`)
-                }
-              >
-                {hashtagValue}
-              </Hashtag>
-            )}
-          >
-            {description}
-          </ReactHashtag>
-          </Description>
+        <Name data-test="username" onClick={() => searchUserId(userId)}>
+          {username}
+        </Name>
+        <Description data-test="description">
+          {reactStringReplace(description, /#(\w+)/g, (match, i) => (
+            <Hashtag
+              onClick={() => navigate(`/hashtag/${match.replace("#", "")}`)}
+            >
+              #{match}
+            </Hashtag>
+          ))}
+        </Description>
         <Link data-test="link" href={link} target="_blank">
           <LinkInfo>
             <p className="title">{title}</p>
