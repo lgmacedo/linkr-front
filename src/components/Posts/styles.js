@@ -129,3 +129,12 @@ export const LinkImg = styled.img`
      height:115px;
   }
 `
+
+export const Hashtag = styled.span`
+  font-weight: 900;
+  cursor: pointer;
+
+  :hover {
+    text-decoration: underline;
+  }
+`;
