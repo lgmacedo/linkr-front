@@ -1,15 +1,25 @@
-import { ContainerPost, Description, LeftSidePost, Link, LinkImg, LinkInfo, Name, RightSidePost } from "./styles";
+import { ContainerPost, Description, LeftSidePost, Link, LinkImg, LinkInfo, Name, RightSidePost , Hashtag, StyledTooltip} from "./styles";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { Tooltip } from "react-tooltip";
-import "react-tooltip/dist/react-tooltip.css";
-
+import reactStringReplace from "react-string-replace";
 
 export default function Posts({ post }) {
-  const { id, image, userId, username, likescount, likedBy, link, picture, title, description, desc } = post;
+  const {
+    id,
+    image,
+    userId,
+    username,
+    likescount,
+    likedBy,
+    link,
+    picture,
+    title,
+    description,
+    desc,
+  } = post;
   const { user, setUserIdSearch } = useContext(UserContext);
   const [like, setLike] = useState("");
   const [color, setColor] = useState("");
@@ -26,9 +36,10 @@ export default function Posts({ post }) {
     },
   };
 
-  useEffect(() => {  
-    const currentUserLiked = likedBy && likedBy.find((o) => o.name === user.username)
-  
+  useEffect(() => {
+    const currentUserLiked =
+      likedBy && likedBy.find((o) => o.name === user.username);
+
     if (currentUserLiked) {
       setColor("#AC0000");
       setLike("heart");
@@ -40,10 +51,10 @@ export default function Posts({ post }) {
       setLike("heart-outline");
     }
   }, [likedBy, user.username]);
-  
+
   function likePost() {
     const postId = id;
-    const ui = user.id
+    const ui = user.id;
     const body = { postId, ui };
     const promise = api.post("/like", body, config);
     promise
@@ -59,7 +70,7 @@ export default function Posts({ post }) {
         }
       })
       .catch((err) => alert(err.message));
-    }
+  }
 
   function searchUserId(id) {
     const obj = { userId, username, picture, likedBy, setColor, setLike };
@@ -70,43 +81,50 @@ export default function Posts({ post }) {
   return (
     <ContainerPost data-test="post">
       <LeftSidePost>
-        <img src={picture} alt="profile pic" onClick={() => searchUserId(userId)} />
-        <ion-icon name={like} style={{ color: color }} onClick={likePost}></ion-icon>
-        <p data-tip={likedBy ? `${likedBy.length} people` : "0 people"} data-for={`tooltip-${id}`}>
+        <img
+          src={picture}
+          alt="profile pic"
+          onClick={() => searchUserId(userId)}
+        />
+        <ion-icon
+          name={like}
+          style={{ color: color }}
+          onClick={likePost}
+        ></ion-icon>
+        <p
+          data-tooltip-content={
+            likedBy && (
+              likedBy.length === 1 ? 
+                (likedBy[0].name === user.username ? "You liked" : `${likedBy[0].name} liked`) :
+              likedBy.length === 2 ? 
+                (likedBy.some((obj) => obj.name === user.username) ?
+                  `You and ${likedBy.find((obj) => obj.name !== user.username)?.name} liked` :
+                  likedBy.map((obj) => obj.name).join(" and ") + " liked") :
+              likedBy.some((obj) => obj.name === user.username) ?
+                (`You, ${likedBy.find((obj) => obj.name !== user.username)?.name} and other ${likedBy.length - 2} people liked`) :
+                `${likedBy[0].name}, ${likedBy[1].name} and other ${likedBy.length - 2} people liked`
+            )
+          }
+          data-tooltip-id={`tooltip-${id}`}
+        >
           {count} likes
         </p>
-        <Tooltip id={`tooltip-${id}`} place="bottom" effect="solid">
-          {likedBy && likedBy.length > 0 ? (
-            <p>
-              {likedBy.includes(user.username) ? "Você, " : ""}
-              {likedBy.map((name, index) => {
-                if (name !== user.username) {
-                  if (likedBy.length > 1) {
-                    if (index === 0) {
-                      return <span key={index}>{name}</span>;
-                    } else if (index === 1) {
-                      return <span key={index}> and {name}</span>;
-                    } else {
-                      return null;
-                    }
-                  } else {
-                    return <span key={index}>{name}</span>;
-                  }
-                }
-                return null;
-              })}
-              {" and other "}
-              {likedBy.length - 2}
-              {likedBy.length === 2 ? " person" : " people"}
-            </p>
-          ) : (
-            "0 people"
-          )}
-        </Tooltip>
+        <StyledTooltip id={`tooltip-${id}`} place="bottom" effect="solid">
+        </StyledTooltip>
       </LeftSidePost>
       <RightSidePost>
-        <Name data-test="username"  onClick={() => searchUserId(userId)}>{username}</Name>
-        <Description data-test="description">{description}</Description>
+        <Name data-test="username" onClick={() => searchUserId(userId)}>
+          {username}
+        </Name>
+        <Description data-test="description">
+          {reactStringReplace(description, /#(\w+)/g, (match, i) => (
+            <Hashtag
+              onClick={() => navigate(`/hashtag/${match.replace("#", "")}`)}
+            >
+              #{match}
+            </Hashtag>
+          ))}
+        </Description>
         <Link data-test="link" href={link} target="_blank">
           <LinkInfo>
             <p className="title">{title}</p>
