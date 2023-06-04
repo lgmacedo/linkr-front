@@ -163,3 +163,12 @@ export const LinkImg = styled.img`
      height:100%;
   }
 `
+
+export const Hashtag = styled.span`
+  font-weight: 900;
+  cursor: pointer;
+
+  :hover {
+    text-decoration: underline;
+  }
+`;
