@@ -1,5 +1,15 @@
 import styled from "styled-components";
 
+/*
+import 'react-tooltip/dist/react-tooltip.css';
+import { Tooltip } from 'react-tooltip';
+
+export const StyledTooltip = styled(Tooltip)`
+  background-color: red;
+  color: #FFFFFF;
+  cursor: pointer;
+`;*/
+
 export const ContainerPost = styled.div`
     width: 611px;
     min-height:276px;
@@ -10,20 +20,38 @@ export const ContainerPost = styled.div`
     padding:5px 5px 10px;
     gap:5px;
     @media (max-width: 420px) {
-     width:100%;
-     min-height:232px;
-     border-radius: 0;
-  }
+      width:100%;
+      min-height:232px;
+      border-radius: 0;
+    }
 `
 
 export const LeftSidePost = styled.div`
 display:flex;
 padding:20px 0 20px 20px;
+flex-direction: column;
+align-items: center;
 img {
   width:50px;
   height:50px;
   border-radius: 27px;
   object-fit: cover;
+  cursor: pointer;
+}
+ion-icon{
+  color: #FFFFFF;
+  font-size: 20px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+p{
+  font-family: 'Lato';
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  text-align: center;
+  margin-top: 5px;
+  color: #FFFFFF;
 }
 @media (max-width: 420px) {
     img {
@@ -50,6 +78,7 @@ export const Name = styled.p`
     font-size:19px;
     line-height: 23px;
     color: #fff;
+    cursor: pointer;
 `
 
 export const Description = styled.p`
@@ -69,7 +98,6 @@ export const Link = styled.a`
     width: 100%;
     @media (max-width: 420px) {
      width:90%;
-     height:115px;
   }
 `;
 
@@ -82,28 +110,34 @@ width:70%;
 p {
     font-family: 'Lato', sans-serif;
     font-weight: 400;
+    overflow:hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 .title {
     font-weight: 400;
     color:#cecece;
     font-size:16px;
     line-height: 19px;
+    height:37px;
 }
 .desc {
     font-weight: 400;
     color:#9B9595;
     font-size:11px;
     line-height: 13px;
+    height:39px;
 }
 .url {
     font-weight: 400;
     color:#CECECE;
     font-size:11px;
     line-height: 13px;
+    height:25px;
 }
 @media (max-width: 611px) {
-    padding:8px;
-    gap:5px;
+    height:100%;
     .title {
       font-size: 11px;
       line-height: 13px;
@@ -125,8 +159,8 @@ export const LinkImg = styled.img`
     object-fit: cover;
     border-radius: 0px 12px 13px 0px;
     @media (max-width: 420px) {
-     width:90px;
-     height:115px;
+     width:30%;
+     height:100%;
   }
 `
 

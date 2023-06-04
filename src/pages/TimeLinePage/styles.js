@@ -35,18 +35,19 @@ export const Title = styled.div`
 `;
 
 export const CreatePost = styled.div`
-  display: flex;
-  gap: 10px;
-  width: 611px;
-  height: 209px;
-  background-color: #fff;
-  border-radius: 16px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  @media (max-width: 420px) {
-    width: 100%;
-    justify-content: center;
-    border-radius: 0;
-  }
+display:flex;
+gap:10px;
+width:611px;
+height:209px;
+background-color: #fff;
+border-radius: 16px;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+@media (max-width: 420px) {
+ width:100%;
+ justify-content: center;
+ border-radius: 0;
+ height:auto;
+}
 `;
 
 export const LeftSide = styled.div`
