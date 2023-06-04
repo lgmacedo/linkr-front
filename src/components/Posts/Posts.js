@@ -73,7 +73,7 @@ export default function Posts({ post }) {
   }
 
   function searchUserId(id) {
-    const obj = { userId, username, picture, likedBy, setColor, setLike };
+    const obj = { userId, username, picture };
     setUserIdSearch(obj);
     navigate(`/user/${id}`);
   }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import Header from "../../components/Header";
+import Header from "../../components/Header/Header";
 import Posts from "../../components/Posts/Posts";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
@@ -14,7 +14,10 @@ import {
   TimeLineContainer,
   Title,
   Link,
+  TrendingContainer,
+  Container,
 } from "./styles";
+import Trending from "../../components/Trending";
 
 export default function TimeLinePage() {
   const { user } = useContext(UserContext);
@@ -22,6 +25,7 @@ export default function TimeLinePage() {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ link: "", description: "" });
   const [loadingForm, setLoadingForm] = useState(false);
+  const [trending, setTrending] = useState([]);
 
   const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
@@ -30,6 +34,7 @@ export default function TimeLinePage() {
   useEffect(() => {
     setLoading(true);
     getPosts();
+    getTrending();
   }, []);
 
   const config = {
@@ -71,59 +76,75 @@ export default function TimeLinePage() {
     });
   }
 
+  function getTrending() {
+    api
+      .get("/trending", config)
+      .then((res) => setTrending(res.data))
+      .catch((err) =>
+        alert("An error occurred while loading trending hashtags")
+      );
+  }
+
   return (
     <>
       <Header></Header>
-      <TimeLineContainer>
-        <Title>timeline</Title>
-        <CreatePost data-test="publish-box">
-          <LeftSide>
-            <img src={user.picture} alt="profile" />
-          </LeftSide>
-          <RightSide>
-            <p>What are you going to share today?</p>
-            <form onSubmit={(e) => handleCreatePost(e)}>
-              <Link
-                data-test="link"
-                required
-                placeholder="http://..."
-                type="text"
-                name="link"
-                value={form.link}
-                disabled={loadingForm}
-                onChange={(e) => handleChange(e)}
-              />
-              <Description
-                data-test="description"
-                placeholder="Awesome article about #javascript"
-                type="text"
-                name="description"
-                value={form.description}
-                onChange={(e) => handleChange(e)}
-                disabled={loadingForm}
-              />
-              <ContainerButton>
-                <CreateButton
-                  data-test="publish-btn"
-                  type="Submit"
+      <Container>
+        <TimeLineContainer>
+          <Title>timeline</Title>
+          <CreatePost data-test="publish-box">
+            <LeftSide>
+              <img src={user.picture} alt="profile" />
+            </LeftSide>
+            <RightSide>
+              <p>What are you going to share today?</p>
+              <form onSubmit={(e) => handleCreatePost(e)}>
+                <Link
+                  data-test="link"
+                  required
+                  placeholder="http://..."
+                  type="text"
+                  name="link"
+                  value={form.link}
                   disabled={loadingForm}
-                >
-                  {loadingForm ? "Publishing..." : "Publish"}
-                </CreateButton>
-              </ContainerButton>
-            </form>
-          </RightSide>
-        </CreatePost>
-        {loading ? (
-          <NoPosts>Loading...</NoPosts>
-        ) : timeline.length === 0 ? (
-          <NoPosts data-test="message">There are no posts yet</NoPosts>
-        ) : (
-          timeline.map((post) => {
-            return <Posts key={post.id} post={post} />;
-          })
-        )}
-      </TimeLineContainer>
+                  onChange={(e) => handleChange(e)}
+                />
+                <Description
+                  data-test="description"
+                  placeholder="Awesome article about #javascript"
+                  type="text"
+                  name="description"
+                  value={form.description}
+                  onChange={(e) => handleChange(e)}
+                  disabled={loadingForm}
+                />
+                <ContainerButton>
+                  <CreateButton
+                    data-test="publish-btn"
+                    type="Submit"
+                    disabled={loadingForm}
+                  >
+                    {loadingForm ? "Publishing..." : "Publish"}
+                  </CreateButton>
+                </ContainerButton>
+              </form>
+            </RightSide>
+          </CreatePost>
+          {loading ? (
+            <NoPosts>Loading...</NoPosts>
+          ) : timeline.length === 0 ? (
+            <NoPosts data-test="message">There are no posts yet</NoPosts>
+          ) : (
+            timeline.map((post) => {
+              return <Posts key={post.id} post={post} />;
+            })
+          )}
+        </TimeLineContainer>
+        <TrendingContainer>
+          <span className="title">trending</span>
+          <div className="line" />
+          <Trending trending={trending} />
+        </TrendingContainer>
+      </Container>
     </>
   );
 }
