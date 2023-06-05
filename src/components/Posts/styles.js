@@ -29,10 +29,19 @@ export const ContainerPost = styled.div`
   .delete {
     position: absolute;
     color: #fff;
-    font-size: 14px;
+    font-size: 16px;
     right: 22px;
     top: 23px;
     cursor: pointer;
+  }
+
+  .edit {
+    position: absolute;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    top: 23px;
+    right: 50px;
   }
 
   @media (max-width: 420px) {
@@ -90,6 +99,7 @@ export const RightSidePost = styled.div`
 `;
 
 export const Name = styled.p`
+  width: fit-content;
   margin: 15px 0 0px 0;
   font-size: 19px;
   line-height: 23px;
@@ -101,6 +111,27 @@ export const Description = styled.p`
   font-size: 17px;
   line-height: 20px;
   color: #b7b7b7;
+`;
+
+export const EditDescription = styled.form`
+  height: fit-content;
+  width: 300px;
+
+  textarea {
+    font-family: "Lato", sans-serif;
+    outline: none;
+    width: 500px;
+    height: 50px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16.8px;
+    padding-left: 9px;
+    box-sizing: border-box;
+    color: #4c4c4c;
+    border-radius: 7px;
+    border: none;
+    resize: none;
+  }
 `;
 
 export const Link = styled.a`

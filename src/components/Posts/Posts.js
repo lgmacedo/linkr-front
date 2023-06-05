@@ -10,8 +10,9 @@ import {
   Hashtag,
   StyledTooltip,
   ModalContainer,
+  EditDescription,
 } from "./styles";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -39,6 +40,11 @@ export default function Posts({ post, getPosts }) {
   const [count, setCount] = useState(likescount);
   const [openModal, setOpenModal] = useState(false);
   const [modalConfirmText, setModalConfirmText] = useState("Yes, delete it");
+  const [openEditInput, setOpenEditInput] = useState(false);
+  const [descriptionEdit, setDescriptionEdit] = useState(description);
+  const [disabled, setDisabled] = useState(false);
+  const [loadingEdit, setLoadingEdit] = useState(false);
+  const editRef = useRef(null);
   const navigate = useNavigate();
 
   const modalStyle = {
@@ -87,6 +93,12 @@ export default function Posts({ post, getPosts }) {
     }
   }, [likedBy, user.username]);
 
+  useEffect(() => {
+    if (openEditInput) {
+      editRef.current.focus();
+    }
+  }, [openEditInput]);
+
   function likePost() {
     const postId = id;
     const ui = user.id;
@@ -115,6 +127,7 @@ export default function Posts({ post, getPosts }) {
 
   function deletePost() {
     setModalConfirmText("Loading...");
+    setDisabled(true);
 
     api
       .delete(`/post/${id}`, config)
@@ -122,12 +135,58 @@ export default function Posts({ post, getPosts }) {
         getPosts();
         setOpenModal(false);
         setModalConfirmText("Yes, delete it");
+        setDisabled(false);
       })
       .catch((err) => {
         alert("An error occurred while trying to delete the post");
         setOpenModal(false);
         setModalConfirmText("Yes, delete it");
+        setDisabled(false);
       });
+  }
+
+  function editPost() {
+    setDisabled(true);
+
+    if (descriptionEdit === description) return;
+
+    setLoadingEdit(true);
+
+    api
+      .put(`/post/${id}`, { descriptionEdit }, config)
+      .then((res) => {
+        setOpenEditInput(false);
+        getPosts();
+        setLoadingEdit(false);
+        setDisabled(false);
+      })
+      .catch((err) => {
+        alert("An error occurred while trying to edit the post");
+        setOpenEditInput(true);
+        setLoadingEdit(false);
+        setDisabled(false);
+      });
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      setOpenEditInput(false);
+      setDescriptionEdit(description);
+    }
+    if (e.key === "Enter" && !e.shiftKey) {
+      editPost();
+    }
+  }
+
+  function openInput() {
+    if (openEditInput) {
+      setOpenEditInput(false);
+      setDescriptionEdit(description);
+      return;
+    }
+
+    setOpenEditInput(true);
   }
 
   return (
@@ -139,10 +198,14 @@ export default function Posts({ post, getPosts }) {
               Are you sure you want to delete this post?
             </span>
             <div className="button-container">
-              <button onClick={() => setOpenModal(false)} className="no">
+              <button
+                onClick={() => setOpenModal(false)}
+                className="no"
+                disabled={disabled}
+              >
                 No, go back
               </button>
-              <button className="yes" onClick={deletePost}>
+              <button className="yes" onClick={deletePost} disabled={disabled}>
                 {modalConfirmText}
               </button>
             </div>
@@ -153,6 +216,9 @@ export default function Posts({ post, getPosts }) {
       <ContainerPost data-test="post">
         <div className="delete" onClick={() => setOpenModal(true)}>
           <ion-icon name="trash" />
+        </div>
+        <div className="edit" onClick={disabled === false && openInput}>
+          <ion-icon name="pencil" />
         </div>
         <LeftSidePost>
           <img
@@ -200,15 +266,30 @@ export default function Posts({ post, getPosts }) {
           <Name data-test="username" onClick={() => searchUserId(userId)}>
             {username}
           </Name>
-          <Description data-test="description">
-            {reactStringReplace(description, /#(\w+)/g, (match, i) => (
-              <Hashtag
-                onClick={() => navigate(`/hashtag/${match.replace("#", "")}`)}
-              >
-                #{match}
-              </Hashtag>
-            ))}
-          </Description>
+          {openEditInput ? (
+            <EditDescription onSubmit={editPost}>
+              <textarea
+                disabled={disabled}
+                ref={editRef}
+                type="text"
+                onKeyDown={handleKeyDown}
+                value={descriptionEdit}
+                onChange={(e) => setDescriptionEdit(e.target.value)}
+              />
+            </EditDescription>
+          ) : loadingEdit ? (
+            <Description data-test="description">Loading...</Description>
+          ) : (
+            <Description data-test="description">
+              {reactStringReplace(description, /#(\w+)/g, (match, i) => (
+                <Hashtag
+                  onClick={() => navigate(`/hashtag/${match.replace("#", "")}`)}
+                >
+                  #{match}
+                </Hashtag>
+              ))}
+            </Description>
+          )}
           <Link data-test="link" href={link} target="_blank">
             <LinkInfo>
               <p className="title">{title}</p>
