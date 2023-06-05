@@ -109,9 +109,11 @@ export default function Posts({ post, getPosts }) {
         setCount(res.data);
         console.log(res.data);
         if (like === "heart-outline") {
+          getPosts()
           setLike("heart");
           setColor("#AC0000");
         } else if (like === "heart") {
+          getPosts()
           setLike("heart-outline");
           setColor("#FFFFFF");
         }
