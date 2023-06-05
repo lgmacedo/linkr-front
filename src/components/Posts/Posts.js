@@ -1,11 +1,9 @@
-import { ContainerPost, Description, LeftSidePost, Link, LinkImg, LinkInfo, Name, RightSidePost , Hashtag} from "./styles";
+import { ContainerPost, Description, LeftSidePost, Link, LinkImg, LinkInfo, Name, RightSidePost , Hashtag, StyledTooltip} from "./styles";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { Tooltip } from "react-tooltip";
-import "react-tooltip/dist/react-tooltip.css";
 import reactStringReplace from "react-string-replace";
 
 export default function Posts({ post }) {
@@ -75,7 +73,7 @@ export default function Posts({ post }) {
   }
 
   function searchUserId(id) {
-    const obj = { userId, username, picture, likedBy, setColor, setLike };
+    const obj = { userId, username, picture };
     setUserIdSearch(obj);
     navigate(`/user/${id}`);
   }
@@ -94,39 +92,25 @@ export default function Posts({ post }) {
           onClick={likePost}
         ></ion-icon>
         <p
-          data-tip={likedBy ? `${likedBy.length} people` : "0 people"}
-          data-for={`tooltip-${id}`}
+          data-tooltip-content={
+            likedBy && (
+              likedBy.length === 1 ? 
+                (likedBy[0].name === user.username ? "You liked" : `${likedBy[0].name} liked`) :
+              likedBy.length === 2 ? 
+                (likedBy.some((obj) => obj.name === user.username) ?
+                  `You and ${likedBy.find((obj) => obj.name !== user.username)?.name} liked` :
+                  likedBy.map((obj) => obj.name).join(" and ") + " liked") :
+              likedBy.some((obj) => obj.name === user.username) ?
+                (`You, ${likedBy.find((obj) => obj.name !== user.username)?.name} and other ${likedBy.length - 2} people liked`) :
+                `${likedBy[0].name}, ${likedBy[1].name} and other ${likedBy.length - 2} people liked`
+            )
+          }
+          data-tooltip-id={`tooltip-${id}`}
         >
           {count} likes
         </p>
-        <Tooltip id={`tooltip-${id}`} place="bottom" effect="solid">
-          {likedBy && likedBy.length > 0 ? (
-            <p>
-              {likedBy.includes(user.username) ? "Você, " : ""}
-              {likedBy.map((name, index) => {
-                if (name !== user.username) {
-                  if (likedBy.length > 1) {
-                    if (index === 0) {
-                      return <span key={index}>{name}</span>;
-                    } else if (index === 1) {
-                      return <span key={index}> and {name}</span>;
-                    } else {
-                      return null;
-                    }
-                  } else {
-                    return <span key={index}>{name}</span>;
-                  }
-                }
-                return null;
-              })}
-              {" and other "}
-              {likedBy.length - 2}
-              {likedBy.length === 2 ? " person" : " people"}
-            </p>
-          ) : (
-            "0 people"
-          )}
-        </Tooltip>
+        <StyledTooltip id={`tooltip-${id}`} place="bottom" effect="solid">
+        </StyledTooltip>
       </LeftSidePost>
       <RightSidePost>
         <Name data-test="username" onClick={() => searchUserId(userId)}>

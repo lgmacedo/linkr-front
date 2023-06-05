@@ -1,5 +1,5 @@
 import axios from "axios";
-import Header from "../../components/Header";
+import Header from "../../components/Header/Header";
 import Posts from "../../components/Posts/Posts";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
