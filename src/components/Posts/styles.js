@@ -1,14 +1,19 @@
 import styled from "styled-components";
-
-/*
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from 'react-tooltip';
 
 export const StyledTooltip = styled(Tooltip)`
-  background-color: red;
+  background: rgba(255, 255, 255, 0.9);
   color: #FFFFFF;
+  border-radius: 3px;
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 13px;
+  color: #505050;
   cursor: pointer;
-`;*/
+`;
 
 export const ContainerPost = styled.div`
     width: 611px;
@@ -114,6 +119,7 @@ p {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    overflow-wrap: anywhere;
 }
 .title {
     font-weight: 400;

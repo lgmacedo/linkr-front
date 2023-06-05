@@ -1,5 +1,5 @@
 import axios from "axios";
-import Header from "../../components/Header";
+import Header from "../../components/Header/Header";
 import Posts from "../../components/Posts/Posts";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
@@ -11,8 +11,6 @@ export default function UserPage() {
   const [timeline, setTimeline] = useState([]);
   const [loading, setLoading] = useState(false);
   const {id} = useParams()
-
-  
 
   const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
@@ -43,8 +41,6 @@ export default function UserPage() {
       )
     );
   }
-
-
 
   return (
     <>
