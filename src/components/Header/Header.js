@@ -91,6 +91,7 @@ export default function Header() {
                 debounceTimeout={300}
                 value={searchTerm}
                 onChange={handleSearch}
+                data-test="search"
               />
               <ion-icon name="search-sharp"></ion-icon>
             </Input>
@@ -102,6 +103,7 @@ export default function Header() {
                     onClick={() =>
                       pageUser(result.id, result.username, result.picture)
                     }
+                    data-test="user-search"
                   >
                     <img src={result.picture} />
                     <p>{result.username}</p>

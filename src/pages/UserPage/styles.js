@@ -9,7 +9,7 @@ justify-content: space-between;
 align-items: center;
 gap:20px;
 @media (max-width: 420px) {
-  margin-top:100px;
+    margin-top: 50px;
 }
 `;
 
@@ -21,6 +21,10 @@ export const Box = styled.div`
     justify-content: space-between;
     align-items: center;
     gap: 18px;
+    @media (max-width: 420px) {
+    width: 100%;
+    margin-bottom:0;
+}
 `
 export const Image = styled.div`
     width: 50px;
@@ -46,8 +50,8 @@ color:#fff;
 font-family: 'Oswald', sans-serif;
 margin-bottom:30px;
 @media (max-width: 420px) {
- width:88%; 
- margin-bottom:0;
+    width: 100%;
+    margin-bottom:0;
 }
 `;
 

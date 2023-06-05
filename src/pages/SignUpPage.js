@@ -17,13 +17,13 @@ export default function SignInPage() {
     picture: "",
   });
 
-  const [buttonEnabled, setButtonEnabled] = useState(true);
-
   useEffect(() => {
     if (localStorage.getItem("user") !== null) {
       navigate("/timeline");
     }
   }, []);
+
+  const [buttonEnabled, setButtonEnabled] = useState(true);
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });

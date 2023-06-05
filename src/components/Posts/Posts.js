@@ -248,6 +248,7 @@ export default function Posts({ post, getPosts }) {
             name={like}
             style={{ color: color }}
             onClick={likePost}
+            data-test="like-btn"
           ></ion-icon>
           <p
             data-tooltip-content={
@@ -271,6 +272,7 @@ export default function Posts({ post, getPosts }) {
                   } people liked`)
             }
             data-tooltip-id={`tooltip-${id}`}
+            data-test="counter"
           >
             {count} likes
           </p>
@@ -278,6 +280,7 @@ export default function Posts({ post, getPosts }) {
             id={`tooltip-${id}`}
             place="bottom"
             effect="solid"
+            data-test="tooltip"
           ></StyledTooltip>
         </LeftSidePost>
         <RightSidePost>

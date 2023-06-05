@@ -18,6 +18,7 @@ import {
   Container,
 } from "./styles";
 import Trending from "../../components/Trending";
+import { useNavigate } from "react-router-dom";
 
 export default function TimeLinePage() {
   const { user } = useContext(UserContext);
@@ -26,10 +27,17 @@ export default function TimeLinePage() {
   const [form, setForm] = useState({ link: "", description: "" });
   const [loadingForm, setLoadingForm] = useState(false);
   const [trending, setTrending] = useState([]);
+  const navigate = useNavigate();
 
   const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
   });
+
+  useEffect(() => {
+    if (localStorage.getItem("user") === null) {
+      navigate("/");
+    }
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -71,7 +79,7 @@ export default function TimeLinePage() {
       setLoadingForm(false);
     });
     promise.catch(() => {
-      alert("An error occurred while publishing your link");
+      alert("There was an error publishing your link");
       setLoadingForm(false);
     });
   }
