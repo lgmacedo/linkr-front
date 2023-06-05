@@ -5,8 +5,6 @@ import styled from "styled-components";
 export default function Trending({ trending }) {
   const navigate = useNavigate();
 
-  console.log(trending);
-
   return (
     <Container>
       {trending.map((hashtag) => (
