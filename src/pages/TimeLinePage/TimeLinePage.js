@@ -139,11 +139,7 @@ export default function TimeLinePage() {
             })
           )}
         </TimeLineContainer>
-        <TrendingContainer>
-          <span className="title">trending</span>
-          <div className="line" />
-          <Trending trending={trending} />
-        </TrendingContainer>
+        <Trending trending={trending} />
       </Container>
     </>
   );

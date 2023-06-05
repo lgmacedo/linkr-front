@@ -83,7 +83,7 @@ export default function Header() {
     <>
       <Container>
         <ContainerHeader>
-          <Logo>linkr</Logo>
+          <Logo onClick={() => navigate("/timeline")}>linkr</Logo>
           <Visible>
             <Input>
               <DebounceInput
@@ -97,8 +97,13 @@ export default function Header() {
             {searchResults.length > 0 && (
               <SearchResults>
                 {searchResults.map((result) => (
-                  <SearchResultItem key={result.id} onClick={()=>pageUser(result.id, result.username, result.picture)}>
-                    <img src={result.picture}/>
+                  <SearchResultItem
+                    key={result.id}
+                    onClick={() =>
+                      pageUser(result.id, result.username, result.picture)
+                    }
+                  >
+                    <img src={result.picture} />
                     <p>{result.username}</p>
                   </SearchResultItem>
                 ))}
@@ -140,8 +145,13 @@ export default function Header() {
         {searchResults.length > 0 && (
           <SearchResults>
             {searchResults.map((result) => (
-              <SearchResultItem key={result.id} onClick={()=>pageUser(result.id, result.username, result.picture)}>
-                <img src={result.picture}/>
+              <SearchResultItem
+                key={result.id}
+                onClick={() =>
+                  pageUser(result.id, result.username, result.picture)
+                }
+              >
+                <img src={result.picture} />
                 <p>{result.username}</p>
               </SearchResultItem>
             ))}
