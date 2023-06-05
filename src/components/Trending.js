@@ -11,7 +11,10 @@ export default function Trending({ trending }) {
       <div className="line" />
       <Container>
         {trending.map((hashtag) => (
-          <Hashtag onClick={() => navigate(`/hashtag/${hashtag.hashtag}`)}>
+          <Hashtag
+            key={hashtag.hashtag}
+            onClick={() => navigate(`/hashtag/${hashtag.hashtag}`)}
+          >
             {`# ${hashtag.hashtag}`}
           </Hashtag>
         ))}
