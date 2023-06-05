@@ -46,7 +46,7 @@ const TrendingContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 25px;
-  margin-top: 260px;
+  margin-top: 125px;
   border-radius: 16px;
   padding-top: 9px;
   box-sizing: border-box;
