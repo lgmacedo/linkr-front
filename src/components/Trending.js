@@ -6,12 +6,13 @@ export default function Trending({ trending }) {
   const navigate = useNavigate();
 
   return (
-    <TrendingContainer>
+    <TrendingContainer data-test="trending">
       <span className="title">trending</span>
       <div className="line" />
       <Container>
         {trending.map((hashtag) => (
           <Hashtag
+            data-test="hashtag"
             key={hashtag.hashtag}
             onClick={() => navigate(`/hashtag/${hashtag.hashtag}`)}
           >

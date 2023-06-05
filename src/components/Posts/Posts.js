@@ -202,10 +202,16 @@ export default function Posts({ post, getPosts }) {
                 onClick={() => setOpenModal(false)}
                 className="no"
                 disabled={disabled}
+                data-test="cancel"
               >
                 No, go back
               </button>
-              <button className="yes" onClick={deletePost} disabled={disabled}>
+              <button
+                className="yes"
+                onClick={deletePost}
+                disabled={disabled}
+                data-test="confirm"
+              >
                 {modalConfirmText}
               </button>
             </div>
@@ -214,10 +220,18 @@ export default function Posts({ post, getPosts }) {
       </Modal>
 
       <ContainerPost data-test="post">
-        <div className="delete" onClick={() => setOpenModal(true)}>
+        <div
+          className="delete"
+          onClick={() => setOpenModal(true)}
+          data-test="delete-btn"
+        >
           <ion-icon name="trash" />
         </div>
-        <div className="edit" onClick={disabled === false && openInput}>
+        <div
+          className="edit"
+          onClick={disabled === false && openInput}
+          data-test="edit-btn"
+        >
           <ion-icon name="pencil" />
         </div>
         <LeftSidePost>
@@ -278,6 +292,7 @@ export default function Posts({ post, getPosts }) {
                 onKeyDown={handleKeyDown}
                 value={descriptionEdit}
                 onChange={(e) => setDescriptionEdit(e.target.value)}
+                data-test="edit-input"
               />
             </EditDescription>
           ) : loadingEdit ? (
