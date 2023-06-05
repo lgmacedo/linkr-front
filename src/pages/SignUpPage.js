@@ -17,6 +17,12 @@ export default function SignInPage() {
     picture: "",
   });
 
+  useEffect(() => {
+    if (localStorage.getItem("user") !== null) {
+      navigate("/timeline");
+    }
+  }, []);
+
   const [buttonEnabled, setButtonEnabled] = useState(true);
 
   function handleChange(e) {
