@@ -279,12 +279,14 @@ export default function Posts({ post, getPosts }) {
           >
             {count} likes
           </p>
-          <StyledTooltip
-            id={`tooltip-${id}`}
-            place="bottom"
-            effect="solid"
-            data-test="tooltip"
-          ></StyledTooltip>
+          <div data-test="tooltip">
+            <StyledTooltip
+              id={`tooltip-${id}`}
+              place="bottom"
+              effect="solid"
+              data-test="tooltip"
+            ></StyledTooltip>
+          </div>
         </LeftSidePost>
         <RightSidePost>
           <Name data-test="username" onClick={() => searchUserId(userId)}>
