@@ -5,7 +5,7 @@ import {
   TrendingContainer,
   Container,
 } from "./styles";
-import Header from "../../components/Header";
+import Header from "../../components/Header/Header";
 import Posts from "../../components/Posts/Posts";
 import Trending from "../../components/Trending";
 import { useContext, useEffect, useState } from "react";
@@ -71,11 +71,7 @@ export default function HashtagPage() {
             })
           )}
         </TimeLineContainer>
-        <TrendingContainer>
-          <span className="title">trending</span>
-          <div className="line" />
-          <Trending trending={trending} />
-        </TrendingContainer>
+        <Trending trending={trending} />
       </Container>
     </>
   );

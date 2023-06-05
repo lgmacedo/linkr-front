@@ -6,13 +6,17 @@ export default function Trending({ trending }) {
   const navigate = useNavigate();
 
   return (
-    <Container>
-      {trending.map((hashtag) => (
-        <Hashtag onClick={() => navigate(`/hashtag/${hashtag.hashtag}`)}>
-          {`# ${hashtag.hashtag}`}
-        </Hashtag>
-      ))}
-    </Container>
+    <TrendingContainer>
+      <span className="title">trending</span>
+      <div className="line" />
+      <Container>
+        {trending.map((hashtag) => (
+          <Hashtag onClick={() => navigate(`/hashtag/${hashtag.hashtag}`)}>
+            {`# ${hashtag.hashtag}`}
+          </Hashtag>
+        ))}
+      </Container>
+    </TrendingContainer>
   );
 }
 
@@ -28,4 +32,38 @@ const Container = styled.span`
   box-sizing: border-box;
   margin-top: 22px;
   justify-content: space-between;
+`;
+
+const TrendingContainer = styled.div`
+  height: 401px;
+  width: 301px;
+  background-color: #171717;
+
+  display: flex;
+  flex-direction: column;
+  margin-left: 25px;
+  margin-top: 260px;
+  border-radius: 16px;
+  padding-top: 9px;
+  box-sizing: border-box;
+
+  .title {
+    font-family: "Oswald", sans-serif;
+    font-weight: 700;
+    font-size: 27px;
+    color: #fff;
+    margin-left: 16px;
+    line-height: 40.01px;
+  }
+
+  .line {
+    width: 100%;
+    height: 1px;
+    background-color: #484848;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 420px) {
+    display: none;
+  }
 `;

@@ -24,6 +24,7 @@ export const Logo = styled.h1`
   font-family: "Passion One", cursive;
   font-size: 49px;
   letter-spacing: 0.05em;
+  cursor: pointer;
   @media (max-width: 420px) {
     font-size: 45px;
   }
