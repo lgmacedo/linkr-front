@@ -3,18 +3,26 @@ import Header from "../../components/Header/Header";
 import Posts from "../../components/Posts/Posts";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { NoPosts, TimeLineContainer, Title, Box, Image } from "./styles";
 
 export default function UserPage() {
   const { user, userIdSearch } = useContext(UserContext);
   const [timeline, setTimeline] = useState([]);
   const [loading, setLoading] = useState(false);
-  const {id} = useParams()
+  const {id} = useParams();
+  const navigate = useNavigate();
 
   const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
   });
+
+  useEffect(() => {
+    if (localStorage.getItem("user") === null) {
+      navigate("/");
+    }
+  }, []);
+
 
   useEffect(() => {
     setLoading(true);

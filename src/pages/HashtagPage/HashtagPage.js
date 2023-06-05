@@ -12,6 +12,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import axios from "axios";
 import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 export default function HashtagPage() {
   const { user } = useContext(UserContext);
@@ -19,6 +20,14 @@ export default function HashtagPage() {
   const [timeline, setTimeline] = useState([]);
   const [loading, setLoading] = useState(false);
   const [trending, setTrending] = useState([]);
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    if (localStorage.getItem("user") === null) {
+      navigate("/");
+    }
+  }, []);
 
   const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
