@@ -220,20 +220,24 @@ export default function Posts({ post, getPosts }) {
       </Modal>
 
       <ContainerPost data-test="post">
-        <div
-          className="delete"
-          onClick={() => setOpenModal(true)}
-          data-test="delete-btn"
-        >
-          <ion-icon name="trash" />
-        </div>
-        <div
-          className="edit"
-          onClick={disabled === false && openInput}
-          data-test="edit-btn"
-        >
-          <ion-icon name="pencil" />
-        </div>
+        {user.id === userId && (
+          <>
+            <div
+              className="delete"
+              onClick={() => setOpenModal(true)}
+              data-test="delete-btn"
+            >
+              <ion-icon name="trash" />
+            </div>
+            <div
+              className="edit"
+              onClick={disabled === false && openInput}
+              data-test="edit-btn"
+            >
+              <ion-icon name="pencil" />
+            </div>
+          </>
+        )}
         <LeftSidePost>
           <img
             src={picture}

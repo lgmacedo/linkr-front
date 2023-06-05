@@ -16,7 +16,7 @@ export default function Trending({ trending }) {
             key={hashtag.hashtag}
             onClick={() => navigate(`/hashtag/${hashtag.hashtag}`)}
           >
-            {`# ${hashtag.hashtag}`}
+            {`#${hashtag.hashtag}`}
           </Hashtag>
         ))}
       </Container>
