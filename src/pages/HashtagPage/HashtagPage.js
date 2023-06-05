@@ -60,7 +60,7 @@ export default function HashtagPage() {
       <Header></Header>
       <Container>
         <TimeLineContainer>
-          <Title># {params.hashtag}</Title>
+          <Title data-test="hashtag-title"># {params.hashtag}</Title>
           {loading ? (
             <NoPosts>Loading...</NoPosts>
           ) : timeline.length === 0 ? (
