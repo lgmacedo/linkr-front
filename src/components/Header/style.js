@@ -121,7 +121,8 @@ export const Visible = styled.div`
 export const Invisible = styled.div`
   display: flex;
   justify-content: center;
-  width: 100%;
+  align-items: center;
+  padding: 5px;
   @media (min-width: 420px) {
     display: none;
   }
@@ -131,7 +132,7 @@ export const InputResponsive = styled.div`
   display: flex;
   flex-direction: row;
   height: 45px;
-  width: 350px;
+  width: 100%;
   background-color: #ffffff;
   box-sizing: border-box;
   align-items: center;
@@ -139,7 +140,7 @@ export const InputResponsive = styled.div`
   padding-right: 15px;
   border-radius: 8px;
   input {
-    width: 300px;
+    width: 100%;
     height: 25px;
     border: none;
     outline: none;
@@ -173,8 +174,8 @@ export const SearchResults = styled.div`
   max-height: 200px;
   z-index: 2;
   @media (max-width: 420px) {
-    width: 350px;
-    top: 145px;
+    width: 97.5%;
+    top: 150px;
   }
 `;
 
