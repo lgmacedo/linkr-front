@@ -19,12 +19,6 @@ export default function SignInPage() {
 
   const [buttonEnabled, setButtonEnabled] = useState(true);
 
-  useEffect(() => {
-    if (localStorage.getItem("user") !== null) {
-      navigate("/timeline");
-    }
-  }, []);
-
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }

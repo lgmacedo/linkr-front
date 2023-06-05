@@ -9,15 +9,6 @@ export default function UserProvider({ children }) {
 
   const [userIdSearch, setUserIdSearch] = useState('')
 
-  const navigate = useNavigate();
-  
-  useEffect(() => {
-    if(lsUser === null){
-        navigate('/');
-    } else {
-        navigate('/timeline')
-    }
-  }, [])
   return (
     <UserContext.Provider value={{ user, setUser, userIdSearch, setUserIdSearch }}>
       {children}
