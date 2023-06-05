@@ -7,10 +7,9 @@ export const Container = styled.div`
 
 export const TimeLineContainer = styled.div`
   width: fit-content;
-  margin-top: 150px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   gap: 20px;
   @media (max-width: 420px) {
@@ -27,7 +26,7 @@ export const Title = styled.div`
   line-height: 64px;
   color: #fff;
   font-family: "Oswald", sans-serif;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
   @media (max-width: 420px) {
     width: 88%;
     margin-bottom: 0;
