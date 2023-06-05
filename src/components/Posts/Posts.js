@@ -41,7 +41,7 @@ export default function Posts({ post, getPosts }) {
   const [openModal, setOpenModal] = useState(false);
   const [modalConfirmText, setModalConfirmText] = useState("Yes, delete it");
   const [openEditInput, setOpenEditInput] = useState(false);
-  const [descriptionEdit, setDescriptionEdit] = useState(description);
+  const [descriptionEdit, setDescriptionEdit] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
   const editRef = useRef(null);
@@ -159,6 +159,7 @@ export default function Posts({ post, getPosts }) {
         getPosts();
         setLoadingEdit(false);
         setDisabled(false);
+        setDescriptionEdit("");
       })
       .catch((err) => {
         alert("An error occurred while trying to edit the post");
@@ -172,7 +173,7 @@ export default function Posts({ post, getPosts }) {
     if (e.key === "Escape") {
       e.preventDefault();
       setOpenEditInput(false);
-      setDescriptionEdit(description);
+      setDescriptionEdit("");
     }
     if (e.key === "Enter" && !e.shiftKey) {
       editPost();
