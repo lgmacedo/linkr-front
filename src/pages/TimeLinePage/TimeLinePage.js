@@ -79,7 +79,7 @@ export default function TimeLinePage() {
       setLoadingForm(false);
     });
     promise.catch(() => {
-      alert("An error occurred while publishing your link");
+      alert("There was an error publishing your link");
       setLoadingForm(false);
     });
   }
