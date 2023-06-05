@@ -109,9 +109,11 @@ export default function Posts({ post, getPosts }) {
         setCount(res.data);
         console.log(res.data);
         if (like === "heart-outline") {
+          getPosts()
           setLike("heart");
           setColor("#AC0000");
         } else if (like === "heart") {
+          getPosts()
           setLike("heart-outline");
           setColor("#FFFFFF");
         }
@@ -277,12 +279,14 @@ export default function Posts({ post, getPosts }) {
           >
             {count} likes
           </p>
-          <StyledTooltip
-            id={`tooltip-${id}`}
-            place="bottom"
-            effect="solid"
-            data-test="tooltip"
-          ></StyledTooltip>
+          <div data-test="tooltip">
+            <StyledTooltip
+              id={`tooltip-${id}`}
+              place="bottom"
+              effect="solid"
+              data-test="tooltip"
+            ></StyledTooltip>
+          </div>
         </LeftSidePost>
         <RightSidePost>
           <Name data-test="username" onClick={() => searchUserId(userId)}>
