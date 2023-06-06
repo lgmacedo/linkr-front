@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import 'react-tooltip/dist/react-tooltip.css';
-import { Tooltip } from 'react-tooltip';
+import "react-tooltip/dist/react-tooltip.css";
+import { Tooltip } from "react-tooltip";
 
 export const StyledTooltip = styled(Tooltip)`
   background: rgba(255, 255, 255, 0.9);
-  color: #FFFFFF;
+  color: #ffffff;
   border-radius: 3px;
-  font-family: 'Lato';
+  font-family: "Lato";
   font-style: normal;
   font-weight: 700;
   font-size: 13px;
@@ -21,9 +21,8 @@ export const ContainerPost = styled.div`
   background-color: #171717;
   border-radius: 16px;
   display: flex;
+  flex-direction: column;
   margin-bottom: 10px;
-  padding: 5px 5px 10px;
-  gap: 5px;
   position: relative;
 
   .delete {
@@ -51,6 +50,12 @@ export const ContainerPost = styled.div`
   }
 `;
 
+export const PostMainContent = styled.div`
+  display: flex;
+  padding: 5px 5px 10px;
+  gap: 5px;
+`;
+
 export const LeftSidePost = styled.div`
   display: flex;
   padding: 20px 0 20px 20px;
@@ -63,7 +68,8 @@ export const LeftSidePost = styled.div`
     object-fit: cover;
     cursor: pointer;
   }
-  ion-icon {
+  ion-icon,
+  svg {
     color: #ffffff;
     font-size: 20px;
     margin-top: 10px;
@@ -95,6 +101,98 @@ export const RightSidePost = styled.div`
   p {
     font-family: "Lato", sans-serif;
     font-weight: 400;
+  }
+`;
+
+export const CommentsContainer = styled.div`
+  display: ${({ opened }) => (opened ? "flex" : "none")};
+  flex-direction: column;
+  align-items: center;
+  background-color: #1e1e1e;
+  border-radius: 0px 0px 16px 16px;
+  font-family: "Lato", sans-serif;
+`;
+
+export const Comment = styled.div`
+  height: 71px;
+  border-bottom: 1px solid #353535;
+  width: 93.45%;
+  display: flex;
+  align-items: center;
+  img {
+    width: 39px;
+    height: 39px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 18px;
+    width: 100%;
+    position: relative;
+    row-gap: 5px;
+    p:nth-child(1){
+      font-size: 14px;
+      font-weight: 700;
+      color: #f3f3f3;
+    }
+    span{
+      font-weight: 400;
+      color: #565656;
+    }
+    p:nth-child(2){
+      font-weight: 400;
+      font-size: 14px;
+      color: #acacac;
+    }
+  }
+`;
+
+export const NewComment = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  width: 93.45%;
+  height: 83px;
+  img {
+    width: 39px;
+    height: 39px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+  }
+  input {
+    height: 39px;
+    margin-left: 14px;
+    width: 100%;
+    background-color: #252525;
+    border-radius: 8px;
+    border: none;
+    padding-left: 15px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #acacac;
+    ::placeholder {
+      color: #575757;
+      font-style: italic;
+      letter-spacing: 0.05em;
+    }
+  }
+  svg {
+    cursor: pointer;
+    position: absolute;
+    right: 12.5px;
   }
 `;
 
