@@ -1,5 +1,6 @@
 import {
   ContainerPost,
+  PostMainContent,
   Description,
   LeftSidePost,
   Link,
@@ -11,6 +12,9 @@ import {
   StyledTooltip,
   ModalContainer,
   EditDescription,
+  CommentsContainer,
+  Comment,
+  NewComment,
 } from "./styles";
 import { useContext, useRef } from "react";
 import { UserContext } from "../../contexts/UserContext";
@@ -19,6 +23,8 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import reactStringReplace from "react-string-replace";
 import Modal from "react-modal";
+import { AiOutlineComment } from "react-icons/ai";
+import { BsSend } from "react-icons/bs";
 
 export default function Posts({ post, getPosts }) {
   const {
@@ -44,6 +50,7 @@ export default function Posts({ post, getPosts }) {
   const [descriptionEdit, setDescriptionEdit] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
+  const [commentsOpened, setCommentsOpened] = useState(false);
   const editRef = useRef(null);
   const navigate = useNavigate();
 
@@ -109,11 +116,11 @@ export default function Posts({ post, getPosts }) {
         setCount(res.data);
         console.log(res.data);
         if (like === "heart-outline") {
-          getPosts()
+          getPosts();
           setLike("heart");
           setColor("#AC0000");
         } else if (like === "heart") {
-          getPosts()
+          getPosts();
           setLike("heart-outline");
           setColor("#FFFFFF");
         }
@@ -241,91 +248,115 @@ export default function Posts({ post, getPosts }) {
             </div>
           </>
         )}
-        <LeftSidePost>
-          <img
-            src={picture}
-            alt="profile pic"
-            onClick={() => searchUserId(userId)}
-          />
-          <ion-icon
-            name={like}
-            style={{ color: color }}
-            onClick={likePost}
-            data-test="like-btn"
-          ></ion-icon>
-          <p
-            data-tooltip-content={
-              likedBy &&
-              (likedBy.length === 1
-                ? likedBy[0].name === user.username
-                  ? "You liked"
-                  : `${likedBy[0].name} liked`
-                : likedBy.length === 2
-                ? likedBy.some((obj) => obj.name === user.username)
-                  ? `You and ${
+        <PostMainContent>
+          <LeftSidePost>
+            <img
+              src={picture}
+              alt="profile pic"
+              onClick={() => searchUserId(userId)}
+            />
+            <ion-icon
+              name={like}
+              style={{ color: color }}
+              onClick={likePost}
+              data-test="like-btn"
+            ></ion-icon>
+            <p
+              data-tooltip-content={
+                likedBy &&
+                (likedBy.length === 1
+                  ? likedBy[0].name === user.username
+                    ? "You liked"
+                    : `${likedBy[0].name} liked`
+                  : likedBy.length === 2
+                  ? likedBy.some((obj) => obj.name === user.username)
+                    ? `You and ${
+                        likedBy.find((obj) => obj.name !== user.username)?.name
+                      } liked`
+                    : likedBy.map((obj) => obj.name).join(" and ") + " liked"
+                  : likedBy.some((obj) => obj.name === user.username)
+                  ? `You, ${
                       likedBy.find((obj) => obj.name !== user.username)?.name
-                    } liked`
-                  : likedBy.map((obj) => obj.name).join(" and ") + " liked"
-                : likedBy.some((obj) => obj.name === user.username)
-                ? `You, ${
-                    likedBy.find((obj) => obj.name !== user.username)?.name
-                  } and other ${likedBy.length - 2} people liked`
-                : `${likedBy[0].name}, ${likedBy[1].name} and other ${
-                    likedBy.length - 2
-                  } people liked`)
-            }
-            data-tooltip-id={`tooltip-${id}`}
-            data-test="counter"
-          >
-            {count} likes
-          </p>
-          <div data-test="tooltip">
-            <StyledTooltip
-              id={`tooltip-${id}`}
-              place="bottom"
-              effect="solid"
-              data-test="tooltip"
-            ></StyledTooltip>
-          </div>
-        </LeftSidePost>
-        <RightSidePost>
-          <Name data-test="username" onClick={() => searchUserId(userId)}>
-            {username}
-          </Name>
-          {openEditInput ? (
-            <EditDescription onSubmit={editPost}>
-              <textarea
-                disabled={disabled}
-                ref={editRef}
-                type="text"
-                onKeyDown={handleKeyDown}
-                value={descriptionEdit}
-                onChange={(e) => setDescriptionEdit(e.target.value)}
-                data-test="edit-input"
-              />
-            </EditDescription>
-          ) : loadingEdit ? (
-            <Description data-test="description">Loading...</Description>
-          ) : (
-            <Description data-test="description">
-              {reactStringReplace(description, /#(\w+)/g, (match, i) => (
-                <Hashtag
-                  onClick={() => navigate(`/hashtag/${match.replace("#", "")}`)}
-                >
-                  #{match}
-                </Hashtag>
-              ))}
-            </Description>
-          )}
-          <Link data-test="link" href={link} target="_blank">
-            <LinkInfo>
-              <p className="title">{title}</p>
-              <p className="desc">{desc}</p>
-              <p className="url">{link}</p>
-            </LinkInfo>
-            <LinkImg src={image} alt={title} />
-          </Link>
-        </RightSidePost>
+                    } and other ${likedBy.length - 2} people liked`
+                  : `${likedBy[0].name}, ${likedBy[1].name} and other ${
+                      likedBy.length - 2
+                    } people liked`)
+              }
+              data-tooltip-id={`tooltip-${id}`}
+              data-test="counter"
+            >
+              {count} likes
+            </p>
+            <AiOutlineComment
+              onClick={() => setCommentsOpened((prevState) => !prevState)}
+            />
+            <p>0 comments</p>
+            <div data-test="tooltip">
+              <StyledTooltip
+                id={`tooltip-${id}`}
+                place="bottom"
+                effect="solid"
+                data-test="tooltip"
+              ></StyledTooltip>
+            </div>
+          </LeftSidePost>
+          <RightSidePost>
+            <Name data-test="username" onClick={() => searchUserId(userId)}>
+              {username}
+            </Name>
+            {openEditInput ? (
+              <EditDescription onSubmit={editPost}>
+                <textarea
+                  disabled={disabled}
+                  ref={editRef}
+                  type="text"
+                  onKeyDown={handleKeyDown}
+                  value={descriptionEdit}
+                  onChange={(e) => setDescriptionEdit(e.target.value)}
+                  data-test="edit-input"
+                />
+              </EditDescription>
+            ) : loadingEdit ? (
+              <Description data-test="description">Loading...</Description>
+            ) : (
+              <Description data-test="description">
+                {reactStringReplace(description, /#(\w+)/g, (match, i) => (
+                  <Hashtag
+                    onClick={() =>
+                      navigate(`/hashtag/${match.replace("#", "")}`)
+                    }
+                  >
+                    #{match}
+                  </Hashtag>
+                ))}
+              </Description>
+            )}
+            <Link data-test="link" href={link} target="_blank">
+              <LinkInfo>
+                <p className="title">{title}</p>
+                <p className="desc">{desc}</p>
+                <p className="url">{link}</p>
+              </LinkInfo>
+              <LinkImg src={image} alt={title} />
+            </Link>
+          </RightSidePost>
+        </PostMainContent>
+        <CommentsContainer opened={commentsOpened}>
+          <Comment>
+            <img src={user.picture}/>
+            <div>
+              <p>{user.username} <span>• following</span></p>
+              <p>Um excelente comentário</p>
+            </div>
+          </Comment>
+          <NewComment>
+            <img src={user.picture}/>
+            <div>
+              <input placeholder="write a comment..." />
+              <BsSend />
+            </div>
+          </NewComment>
+        </CommentsContainer>
       </ContainerPost>
     </>
   );
