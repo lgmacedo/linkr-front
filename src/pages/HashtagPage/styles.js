@@ -7,7 +7,7 @@ export const Container = styled.div`
 
 export const TimeLineContainer = styled.div`
   width: fit-content;
-  margin-top: 150px;
+  margin-top: 11px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
