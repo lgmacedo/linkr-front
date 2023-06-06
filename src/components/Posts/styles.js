@@ -134,16 +134,16 @@ export const Comment = styled.div`
     width: 100%;
     position: relative;
     row-gap: 5px;
-    p:nth-child(1){
+    p:nth-child(1) {
       font-size: 14px;
       font-weight: 700;
       color: #f3f3f3;
     }
-    span{
+    span {
       font-weight: 400;
       color: #565656;
     }
-    p:nth-child(2){
+    p:nth-child(2) {
       font-weight: 400;
       font-size: 14px;
       color: #acacac;

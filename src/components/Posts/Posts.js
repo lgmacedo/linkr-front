@@ -51,8 +51,14 @@ export default function Posts({ post, getPosts }) {
   const [disabled, setDisabled] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [commentsOpened, setCommentsOpened] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
   const editRef = useRef(null);
   const navigate = useNavigate();
+
+  function handleChange(e) {
+    setNewComment(e.target.value);
+  }
 
   const modalStyle = {
     overlay: {
@@ -106,6 +112,11 @@ export default function Posts({ post, getPosts }) {
     }
   }, [openEditInput]);
 
+  useEffect(() => {
+    const promise = api.get(`/post/${id}/comments`, config);
+    promise.then((res) => setComments(res.data.reverse()));
+  }, [newComment]);
+
   function likePost() {
     const postId = id;
     const ui = user.id;
@@ -114,7 +125,6 @@ export default function Posts({ post, getPosts }) {
     promise
       .then((res) => {
         setCount(res.data);
-        console.log(res.data);
         if (like === "heart-outline") {
           getPosts();
           setLike("heart");
@@ -197,6 +207,13 @@ export default function Posts({ post, getPosts }) {
     }
 
     setOpenEditInput(true);
+  }
+
+  function addNewComment(){
+    if(newComment === "") return;
+    const promise = api.post("/new-comment", {postId: id, comment: newComment}, config);
+    promise.then(()=>setNewComment(""));
+    promise.catch("An error occurred while trying to comment. Please try again");
   }
 
   return (
@@ -290,7 +307,7 @@ export default function Posts({ post, getPosts }) {
             <AiOutlineComment
               onClick={() => setCommentsOpened((prevState) => !prevState)}
             />
-            <p>0 comments</p>
+            <p>{comments.length} comments</p>
             <div data-test="tooltip">
               <StyledTooltip
                 id={`tooltip-${id}`}
@@ -342,18 +359,36 @@ export default function Posts({ post, getPosts }) {
           </RightSidePost>
         </PostMainContent>
         <CommentsContainer opened={commentsOpened}>
-          <Comment>
-            <img src={user.picture}/>
-            <div>
-              <p>{user.username} <span>• following</span></p>
-              <p>Um excelente comentário</p>
-            </div>
-          </Comment>
+          {comments.map((c) => (
+            <Comment>
+              <img src={c.picture} />
+              <div>
+                <p>
+                  {c.username}{" "}
+                  <span>
+                    {c.postAuthor
+                      ? "• post's author"
+                      : c.following
+                      ? "• following"
+                      : ""}
+                  </span>
+                </p>
+                <p>{c.comment}</p>
+              </div>
+            </Comment>
+          ))}
           <NewComment>
-            <img src={user.picture}/>
+            <img src={user.picture} />
             <div>
-              <input placeholder="write a comment..." />
-              <BsSend />
+              <input
+                required
+                type="text"
+                name="new-comment"
+                value={newComment}
+                placeholder="write a comment..."
+                onChange={(e) => handleChange(e)}
+              />
+              <BsSend onClick={addNewComment}/>
             </div>
           </NewComment>
         </CommentsContainer>
