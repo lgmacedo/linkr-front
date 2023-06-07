@@ -26,7 +26,7 @@ import Modal from "react-modal";
 import { AiOutlineComment } from "react-icons/ai";
 import { BsSend } from "react-icons/bs";
 
-export default function Posts({ post, getPosts }) {
+export default function Posts({ post, getPosts, idPost }) {
   const {
     id,
     image,
@@ -113,8 +113,8 @@ export default function Posts({ post, getPosts }) {
   }, [openEditInput]);
 
   useEffect(() => {
-    const promise = api.get(`/post/${id}/comments`, config);
-    promise.then((res) => setComments(res.data.reverse()));
+    const promise = api.get(`/post/${idPost}/comments`, config);
+    promise.then((res) => setComments(res.data));
   }, [newComment]);
 
   function likePost() {
