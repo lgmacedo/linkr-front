@@ -209,11 +209,17 @@ export default function Posts({ post, getPosts, idPost }) {
     setOpenEditInput(true);
   }
 
-  function addNewComment(){
-    if(newComment === "") return;
-    const promise = api.post("/new-comment", {postId: id, comment: newComment}, config);
-    promise.then(()=>setNewComment(""));
-    promise.catch("An error occurred while trying to comment. Please try again");
+  function addNewComment() {
+    if (newComment === "") return;
+    const promise = api.post(
+      "/new-comment",
+      { postId: idPost, comment: newComment },
+      config
+    );
+    promise.then(() => setNewComment(""));
+    promise.catch(
+      "An error occurred while trying to comment. Please try again"
+    );
   }
 
   return (
@@ -305,9 +311,10 @@ export default function Posts({ post, getPosts, idPost }) {
               {count} likes
             </p>
             <AiOutlineComment
+              data-test="comment-btn"
               onClick={() => setCommentsOpened((prevState) => !prevState)}
             />
-            <p>{comments.length} comments</p>
+            <p data-test="comment-counter">{comments.length} comments</p>
             <div data-test="tooltip">
               <StyledTooltip
                 id={`tooltip-${id}`}
@@ -358,9 +365,9 @@ export default function Posts({ post, getPosts, idPost }) {
             </Link>
           </RightSidePost>
         </PostMainContent>
-        <CommentsContainer opened={commentsOpened}>
+        <CommentsContainer data-test="comment-box" opened={commentsOpened}>
           {comments.map((c) => (
-            <Comment>
+            <Comment data-test="comment">
               <img src={c.picture} />
               <div>
                 <p>
@@ -381,6 +388,7 @@ export default function Posts({ post, getPosts, idPost }) {
             <img src={user.picture} />
             <div>
               <input
+                data-test="comment-input"
                 required
                 type="text"
                 name="new-comment"
@@ -388,7 +396,7 @@ export default function Posts({ post, getPosts, idPost }) {
                 placeholder="write a comment..."
                 onChange={(e) => handleChange(e)}
               />
-              <BsSend onClick={addNewComment}/>
+              <BsSend data-test="comment-submit" onClick={addNewComment} />
             </div>
           </NewComment>
         </CommentsContainer>
