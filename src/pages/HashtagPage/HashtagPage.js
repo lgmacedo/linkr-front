@@ -13,6 +13,8 @@ import { UserContext } from "../../contexts/UserContext";
 import axios from "axios";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
+import InfiniteScroll from "react-infinite-scroller";
+import LoadingInfiniteScroll from "../../components/LoadingInfiniteScroll";
 
 export default function HashtagPage() {
   const { user } = useContext(UserContext);
@@ -20,6 +22,8 @@ export default function HashtagPage() {
   const [timeline, setTimeline] = useState([]);
   const [loading, setLoading] = useState(false);
   const [trending, setTrending] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMorePosts, setHasMorePosts] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,12 +63,45 @@ export default function HashtagPage() {
       .then((res) => {
         setLoading(false);
         setTimeline(res.data);
+        console.log(res.data);
+          setHasMorePosts(true);
       })
       .catch((err) =>
         alert(
           "An error occured while trying to fetch the posts, please refresh the page"
         )
       );
+  }
+
+  function fetchOlderPosts() {
+    console.log('ola');
+    const offset = page * 10;
+
+    if (timeline?.length < 10) {
+      setHasMorePosts(false);
+      return;
+    }
+
+    api
+      .get(`/hashtag/${params.hashtag}`, {
+        headers: config.headers,
+        params: { offset: offset },
+      })
+      .then((res) => {
+        const newPostsData = res.data;
+
+        if (newPostsData.length === 0) {
+          setHasMorePosts(false);
+          return;
+        }
+
+        setTimeline((prevPosts) => [...prevPosts, ...newPostsData]);
+        setPage((prevPage) => prevPage + 1);
+        setHasMorePosts(true);
+      })
+      .catch((err) => {
+        console.log("Error while fetching posts. Please refresh the page.");
+      });
   }
 
   return (
@@ -78,11 +115,23 @@ export default function HashtagPage() {
           ) : timeline.length === 0 ? (
             <NoPosts data-test="message">There are no posts yet</NoPosts>
           ) : (
-            timeline.map((post) => {
-              return (
-                <Posts key={post.postId} post={post} getPosts={getPostsByHashtag} idPost={post.postId}/>
-              );
-            })
+            <InfiniteScroll
+              pageStart={1}
+              loadMore={fetchOlderPosts}
+              hasMore={hasMorePosts}
+              loader={
+              <LoadingInfiniteScroll key="loading-infinite" />
+              }
+            >
+              {timeline.map((post) => (
+                <Posts
+                  key={post.postId}
+                  post={post}
+                  getPosts={getPostsByHashtag}
+                  idPost={post.postId}
+                />
+              ))}
+            </InfiniteScroll>
           )}
         </TimeLineContainer>
         <Trending trending={trending} />

@@ -15,6 +15,8 @@ import {
   Unfollow,
 } from "./styles";
 import Trending from "../../components/Trending";
+import LoadingInfiniteScroll from "../../components/LoadingInfiniteScroll";
+import InfiniteScroll from "react-infinite-scroller";
 
 export default function UserPage() {
   const { user, userIdSearch } = useContext(UserContext);
@@ -23,6 +25,8 @@ export default function UserPage() {
   const [trending, setTrending] = useState([]);
   const [follow, setFollow] = useState([]);
   const [disabled, setDisabled] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMorePosts, setHasMorePosts] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -54,6 +58,7 @@ export default function UserPage() {
     promise.then((res) => {
       setLoading(false);
       setTimeline(res.data);
+      setHasMorePosts(true);
     });
     promise.catch((err) =>
       alert(
@@ -96,6 +101,37 @@ export default function UserPage() {
       });
   }
 
+  function fetchOlderPosts() {
+    console.log("ola");
+    const offset = page * 10;
+
+    if (timeline?.length < 10) {
+      setHasMorePosts(false);
+      return;
+    }
+
+    api
+      .get(`/user/${id}`, {
+        headers: config.headers,
+        params: { offset: offset },
+      })
+      .then((res) => {
+        const newPostsData = res.data;
+
+        if (newPostsData.length === 0) {
+          setHasMorePosts(false);
+          return;
+        }
+
+        setTimeline((prevPosts) => [...prevPosts, ...newPostsData]);
+        setPage((prevPage) => prevPage + 1);
+        setHasMorePosts(true);
+      })
+      .catch((err) => {
+        console.log("Error while fetching posts. Please refresh the page.");
+      });
+  }
+
   return (
     <>
       <Header></Header>
@@ -123,9 +159,21 @@ export default function UserPage() {
           ) : timeline.length === 0 ? (
             <NoPosts data-test="message">There are no posts yet</NoPosts>
           ) : (
-            timeline.map((post) => {
-              return <Posts key={post.id} post={post} data-test="post" idPost={post.id} />;
-            })
+            <InfiniteScroll
+              pageStart={1}
+              loadMore={fetchOlderPosts}
+              hasMore={hasMorePosts}
+              loader={<LoadingInfiniteScroll key="loading-infinite" />}
+            >
+              {timeline.map((post) => (
+                <Posts
+                  key={post.postId}
+                  post={post}
+                  getPosts={getPosts}
+                  idPost={post.postId}
+                />
+              ))}
+            </InfiniteScroll>
           )}
         </TimeLineContainer>
         <Trending trending={trending} />
