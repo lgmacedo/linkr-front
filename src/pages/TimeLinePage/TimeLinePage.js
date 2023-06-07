@@ -21,6 +21,8 @@ import Trending from "../../components/Trending";
 import { useNavigate } from "react-router-dom";
 import ButtonMorePosts from "../../components/ButtonMorePosts";
 import useInterval from "use-interval";
+import InfiniteScroll from "react-infinite-scroller";
+import LoadingInfiniteScroll from "../../components/LoadingInfiniteScroll";
 
 export default function TimeLinePage() {
   const { user } = useContext(UserContext);
@@ -31,8 +33,9 @@ export default function TimeLinePage() {
   const [form, setForm] = useState({ link: "", description: "" });
   const [loadingForm, setLoadingForm] = useState(false);
   const [trending, setTrending] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMorePosts, setHasMorePosts] = useState(false);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     if (localStorage.getItem("user") === null) {
@@ -52,7 +55,7 @@ export default function TimeLinePage() {
     },
   };
 
-  function fetchInitialPosts(){
+  function fetchInitialPosts() {
     setLoading(true);
     getPosts();
     getTrending();
@@ -60,17 +63,18 @@ export default function TimeLinePage() {
 
   function getPosts() {
     api
-    .get("/timeline", config)
-    .then((res) => {
-      setLoading(false);
-      setTimeline(res.data);
-      setNewPosts([]);
-    })
-    .catch((err) =>
-      alert(
-        "An error occured while trying to fetch the posts, please refresh the page"
-      )
-    );
+      .get("/timeline", config)
+      .then((res) => {
+        setLoading(false);
+        setTimeline(res.data);
+        setHasMorePosts(true);
+        setNewPosts([]);
+      })
+      .catch((err) =>
+        alert(
+          "An error occured while trying to fetch the posts, please refresh the page"
+        )
+      );
   }
 
   function handleChange(e) {
@@ -112,12 +116,15 @@ export default function TimeLinePage() {
       .then((res) => {
         const newPostsData = res.data;
         const filteredPosts = newPostsData.filter((post) => {
-          return post.userId !== user.id && !timeline.some(({ id }) => id === post.id);
+          return (
+            post.userId !== user.id &&
+            !timeline.some(({ id }) => id === post.id)
+          );
         });
-  
+
         if (filteredPosts.length > 0) {
           setNewPosts(filteredPosts);
-          setNewPostsCount(filteredPosts.length)
+          setNewPostsCount(filteredPosts.length);
         }
       })
       .catch((err) =>
@@ -129,6 +136,40 @@ export default function TimeLinePage() {
     setTimeline([...newPosts, ...timeline]);
     setNewPosts([]);
     setNewPostsCount(0);
+  }
+
+
+  function fetchOlderPosts() {
+    const offset = page * 10;
+
+    if (timeline?.length < 10) {
+      setHasMorePosts(false);
+      return;
+    }
+
+    console.log(timeline);
+    api
+      .get("/timeline", {
+        headers: config.headers,
+        params: { offset: offset },
+      })
+      .then((res) => {
+        const newPostsData = res.data;
+
+        if (newPostsData.length === 0) {
+          setHasMorePosts(false);
+          return;
+        }
+        setTimeline((prevPosts) => {
+          const updatedTimeline = [...prevPosts, ...newPostsData];
+          return updatedTimeline;
+        });
+        setPage((prevPage) => prevPage + 1);
+        setHasMorePosts(true);
+      })
+      .catch((err) => {
+        console.log("Error while fetching posts. Please refresh the page.");
+      });
   }
 
   return (
@@ -175,15 +216,38 @@ export default function TimeLinePage() {
               </form>
             </RightSide>
           </CreatePost>
-          { newPosts.length > 0 ? <ButtonMorePosts newPostsCount={newPostsCount} handleButtonNewPost={handleButtonNewPost} /> : "" }
+          {newPosts.length > 0 ? (
+            <ButtonMorePosts
+              newPostsCount={newPostsCount}
+              handleButtonNewPost={handleButtonNewPost}
+            />
+          ) : (
+            ""
+          )}
           {loading ? (
             <NoPosts>Loading...</NoPosts>
           ) : timeline.length === 0 ? (
             <NoPosts data-test="message">There are no posts yet</NoPosts>
           ) : (
-            timeline.map((post) => {
-              return <Posts key={post.id} post={post} getPosts={getPosts} idPost={post.id}/>;
-            })
+            <InfiniteScroll
+              pageStart={1}
+              loadMore={fetchOlderPosts}
+              hasMore={hasMorePosts}
+              loader={
+                <LoadingInfiniteScroll key="infinite" />
+              }
+            >
+              {timeline.map((post) => {
+                return (
+                  <Posts
+                    key={post.id}
+                    post={post}
+                    getPosts={getPosts}
+                    idPost={post.id}
+                  />
+                );
+              })}
+            </InfiniteScroll>
           )}
         </TimeLineContainer>
         <Trending trending={trending} />
