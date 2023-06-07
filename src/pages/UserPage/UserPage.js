@@ -52,7 +52,6 @@ export default function UserPage() {
   function getPosts() {
     const promise = api.get(`/user/${id}`, config);
     promise.then((res) => {
-      console.log("resposta api", res.data);
       setLoading(false);
       setTimeline(res.data);
     });
@@ -97,8 +96,6 @@ export default function UserPage() {
       });
   }
 
-  console.log(follow);
-
   return (
     <>
       <Header></Header>
@@ -127,7 +124,7 @@ export default function UserPage() {
             <NoPosts data-test="message">There are no posts yet</NoPosts>
           ) : (
             timeline.map((post) => {
-              return <Posts key={post.id} post={post} data-test="post" />;
+              return <Posts key={post.id} post={post} data-test="post" idPost={post.id} />;
             })
           )}
         </TimeLineContainer>
