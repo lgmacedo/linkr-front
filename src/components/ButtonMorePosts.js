@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function ButtonMorePosts({newPostsCount, handleButtonNewPost}){
 
 
-    return (<Button onClick={handleButtonNewPost}>
+    return (<Button onClick={() => handleButtonNewPost()}>
         <div>{newPostsCount} new post{newPostsCount > 1 ? "s" : ""}, load more! <LuRefreshCw /></div>
         </Button>)
 }

@@ -125,12 +125,11 @@ export default function TimeLinePage() {
       );
   }
 
-  function handleButtonNewPost(){
-    setTimeline(newPosts);
+  function handleButtonNewPost() {
+    setTimeline([...newPosts, ...timeline]);
     setNewPosts([]);
     setNewPostsCount(0);
-}
-
+  }
 
   return (
     <>
