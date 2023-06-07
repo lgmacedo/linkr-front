@@ -167,14 +167,14 @@ export default function UserPage() {
             >
               {timeline.map((post) => (
                 <Posts
-                  key={post.postId}
+                  key={post.id}
                   post={post}
                   getPosts={getPosts}
-                  idPost={post.postId}
+                  idPost={post.id}
                 />
               ))}
             </InfiniteScroll>
-          )}
+            )}
         </TimeLineContainer>
         <Trending trending={trending} />
       </Container>

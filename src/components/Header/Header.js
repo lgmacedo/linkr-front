@@ -4,8 +4,20 @@ import { UserContext } from "../../contexts/UserContext";
 import { SlArrowDown, SlArrowUp } from "react-icons/sl";
 import { DebounceInput } from "react-debounce-input";
 import axios from "axios";
-import { Container, ContainerHeader, Logo, ProfileContainer, ProfilePicture, Menu, Input, Visible,
-   Invisible, InputResponsive, SearchResults, SearchResultItem } from "./style";
+import {
+  Container,
+  ContainerHeader,
+  Logo,
+  ProfileContainer,
+  ProfilePicture,
+  Menu,
+  Input,
+  Visible,
+  Invisible,
+  InputResponsive,
+  SearchResults,
+  SearchResultItem,
+} from "./style";
 
 export default function Header() {
   const { user, setUser, setUserIdSearch } = useContext(UserContext);
@@ -54,7 +66,7 @@ export default function Header() {
     setSearchTerm(searchTerm);
     if (searchTerm.length >= 3) {
       const body = { username: searchTerm };
-      const promise = api.post("/users", body, config)
+      const promise = api.post("/users", body, config);
       promise
         .then((res) => {
           setSearchResults(res.data);
@@ -68,15 +80,19 @@ export default function Header() {
   }
 
   function logout() {
-    localStorage.clear();
-    setUser({});
-    navigate("/");
+    const promise = api.post("/log-out", {}, config);
+    promise.then(() => {
+      localStorage.clear();
+      setUser({});
+      navigate("/");
+    });
+    promise.catch(()=>alert("Error trying to log out. Please try again."));
   }
 
-  function pageUser(id, username, picture){
+  function pageUser(id, username, picture) {
     const obj = { id, username, picture };
-    setUserIdSearch(obj)
-    navigate(`/user/${id}`)
+    setUserIdSearch(obj);
+    navigate(`/user/${id}`);
   }
 
   return (
