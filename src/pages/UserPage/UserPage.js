@@ -124,7 +124,7 @@ export default function UserPage() {
             <NoPosts data-test="message">There are no posts yet</NoPosts>
           ) : (
             timeline.map((post) => {
-              return <Posts key={post.id} post={post} data-test="post" idPost={post.id} />;
+              return <Posts key={post.id} post={post} data-test="post" idPost={post.id} getPosts={getPosts}/>;
             })
           )}
         </TimeLineContainer>

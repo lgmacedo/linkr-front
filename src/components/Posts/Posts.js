@@ -118,7 +118,7 @@ export default function Posts({ post, getPosts, idPost }) {
   }, [newComment]);
 
   function likePost() {
-    const postId = id;
+    const postId = idPost;
     const ui = user.id;
     const body = { postId, ui };
     const promise = api.post("/like", body, config);
@@ -149,7 +149,7 @@ export default function Posts({ post, getPosts, idPost }) {
     setDisabled(true);
 
     api
-      .delete(`/post/${id}`, config)
+      .delete(`/post/${idPost}`, config)
       .then((res) => {
         getPosts();
         setOpenModal(false);
@@ -172,7 +172,7 @@ export default function Posts({ post, getPosts, idPost }) {
     setLoadingEdit(true);
 
     api
-      .put(`/post/${id}`, { descriptionEdit }, config)
+      .put(`/post/${idPost}`, { descriptionEdit }, config)
       .then((res) => {
         setOpenEditInput(false);
         getPosts();
@@ -224,7 +224,7 @@ export default function Posts({ post, getPosts, idPost }) {
 
   return (
     <>
-      <Modal isOpen={openModal} style={modalStyle}>
+      <Modal isOpen={openModal} style={modalStyle} appElement={document.getElementById('root')}>
         <ModalContainer openModal={openModal}>
           <div className="container">
             <span className="text">
@@ -264,7 +264,7 @@ export default function Posts({ post, getPosts, idPost }) {
             </div>
             <div
               className="edit"
-              onClick={disabled === false && openInput}
+              onClick={disabled ? undefined : openInput}
               data-test="edit-btn"
             >
               <ion-icon name="pencil" />
@@ -305,7 +305,7 @@ export default function Posts({ post, getPosts, idPost }) {
                       likedBy.length - 2
                     } people liked`)
               }
-              data-tooltip-id={`tooltip-${id}`}
+              data-tooltip-id={`tooltip-${idPost}`}
               data-test="counter"
             >
               {count} likes
@@ -317,7 +317,7 @@ export default function Posts({ post, getPosts, idPost }) {
             <p data-test="comment-counter">{comments.length} comments</p>
             <div data-test="tooltip">
               <StyledTooltip
-                id={`tooltip-${id}`}
+                id={`tooltip-${idPost}`}
                 place="bottom"
                 effect="solid"
                 data-test="tooltip"
