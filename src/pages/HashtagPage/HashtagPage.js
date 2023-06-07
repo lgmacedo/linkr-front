@@ -22,7 +22,6 @@ export default function HashtagPage() {
   const [trending, setTrending] = useState([]);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     if (localStorage.getItem("user") === null) {
       navigate("/");
@@ -58,10 +57,14 @@ export default function HashtagPage() {
     api
       .get(`/hashtag/${params.hashtag}`, config)
       .then((res) => {
-        setTimeline(res.data);
         setLoading(false);
+        setTimeline(res.data);
       })
-      .catch((err) => alert("An error occurred while loading posts"));
+      .catch((err) =>
+        alert(
+          "An error occured while trying to fetch the posts, please refresh the page"
+        )
+      );
   }
 
   return (
@@ -76,7 +79,9 @@ export default function HashtagPage() {
             <NoPosts data-test="message">There are no posts yet</NoPosts>
           ) : (
             timeline.map((post) => {
-              return <Posts key={post.id} post={post} />;
+              return (
+                <Posts key={post.postId} post={post} getPosts={getPostsByHashtag} idPost={post.postId}/>
+              );
             })
           )}
         </TimeLineContainer>
