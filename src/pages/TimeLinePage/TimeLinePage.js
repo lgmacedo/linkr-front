@@ -19,31 +19,32 @@ import {
 } from "./styles";
 import Trending from "../../components/Trending";
 import { useNavigate } from "react-router-dom";
+import ButtonMorePosts from "../../components/ButtonMorePosts";
+import useInterval from "use-interval";
 
 export default function TimeLinePage() {
   const { user } = useContext(UserContext);
   const [timeline, setTimeline] = useState([]);
+  const [newPosts, setNewPosts] = useState([]);
+  const [newPostsCount, setNewPostsCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ link: "", description: "" });
   const [loadingForm, setLoadingForm] = useState(false);
   const [trending, setTrending] = useState([]);
   const navigate = useNavigate();
 
-  const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-  });
 
   useEffect(() => {
     if (localStorage.getItem("user") === null) {
       navigate("/");
+    } else {
+      fetchInitialPosts();
     }
   }, []);
 
-  useEffect(() => {
-    setLoading(true);
-    getPosts();
-    getTrending();
-  }, []);
+  const api = axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+  });
 
   const config = {
     headers: {
@@ -51,13 +52,21 @@ export default function TimeLinePage() {
     },
   };
 
+  function fetchInitialPosts(){
+    setLoading(true);
+    getPosts();
+    getTrending();
+  }
+
   function getPosts() {
-    const promise = api.get("/timeline", config);
-    promise.then((res) => {
+    api
+    .get("/timeline", config)
+    .then((res) => {
       setLoading(false);
       setTimeline(res.data);
-    });
-    promise.catch((err) =>
+      setNewPosts([]);
+    })
+    .catch((err) =>
       alert(
         "An error occured while trying to fetch the posts, please refresh the page"
       )
@@ -91,6 +100,35 @@ export default function TimeLinePage() {
       .catch((err) =>
         alert("An error occurred while loading trending hashtags")
       );
+  }
+
+  useInterval(() => {
+    refreshPosts();
+  }, 15000);
+
+  function refreshPosts() {
+    api
+      .get("/timeline", config)
+      .then((res) => {
+        const newPostsData = res.data;
+        const filteredPosts = newPostsData.filter((post) => {
+          return post.userId !== user.id && !timeline.some(({ id }) => id === post.id);
+        });
+  
+        if (filteredPosts.length > 0) {
+          setNewPosts(filteredPosts);
+          setNewPostsCount(filteredPosts.length)
+        }
+      })
+      .catch((err) =>
+        alert("Error while getting new posts, please refresh the page")
+      );
+  }
+
+  function handleButtonNewPost() {
+    setTimeline([...newPosts, ...timeline]);
+    setNewPosts([]);
+    setNewPostsCount(0);
   }
 
   return (
@@ -137,6 +175,7 @@ export default function TimeLinePage() {
               </form>
             </RightSide>
           </CreatePost>
+          { newPosts.length > 0 ? <ButtonMorePosts newPostsCount={newPostsCount} handleButtonNewPost={handleButtonNewPost} /> : "" }
           {loading ? (
             <NoPosts>Loading...</NoPosts>
           ) : timeline.length === 0 ? (
