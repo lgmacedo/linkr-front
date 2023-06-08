@@ -303,20 +303,20 @@ export default function Posts({ post, getPosts, idPost }) {
                 (likedBy.length === 1
                   ? likedBy[0].name === user.username
                     ? "You liked"
-                    : `${likedBy[0].name} liked`
+                    : `${likedBy[0].name}`
                   : likedBy.length === 2
                   ? likedBy.some((obj) => obj.name === user.username)
                     ? `You and ${
                         likedBy.find((obj) => obj.name !== user.username)?.name
-                      } liked`
-                    : likedBy.map((obj) => obj.name).join(" and ") + " liked"
+                      }`
+                    : likedBy.map((obj) => obj.name).join(" and ")
                   : likedBy.some((obj) => obj.name === user.username)
                   ? `You, ${
                       likedBy.find((obj) => obj.name !== user.username)?.name
-                    } and other ${likedBy.length - 2} people liked`
+                    } and other ${likedBy.length - 2} people`
                   : `${likedBy[0].name}, ${likedBy[1].name} and other ${
                       likedBy.length - 2
-                    } people liked`)
+                    } people`)
               }
               data-tooltip-id={`tooltip-${idPost}`}
               data-test="counter"
