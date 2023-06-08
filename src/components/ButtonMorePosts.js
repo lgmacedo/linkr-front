@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import { LuRefreshCw } from  'react-icons/lu';
-import { useState } from "react";
 
 export default function ButtonMorePosts({newPostsCount, handleButtonNewPost}){
 
 
-    return (<Button onClick={() => handleButtonNewPost()}>
+    return (<Button data-test="load-btn" onClick={() => handleButtonNewPost()}>
         <div>{newPostsCount} new post{newPostsCount > 1 ? "s" : ""}, load more! <LuRefreshCw /></div>
         </Button>)
 }
