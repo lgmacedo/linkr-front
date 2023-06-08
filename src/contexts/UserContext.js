@@ -8,9 +8,10 @@ export default function UserProvider({ children }) {
   const [user, setUser] = useState(lsUser ? lsUser : {});
 
   const [userIdSearch, setUserIdSearch] = useState('')
+  const [repostData, setRepostData] = useState('')
 
   return (
-    <UserContext.Provider value={{ user, setUser, userIdSearch, setUserIdSearch }}>
+    <UserContext.Provider value={{ user, setUser, userIdSearch, setUserIdSearch, repostData, setRepostData }}>
       {children}
     </UserContext.Provider>
   );
