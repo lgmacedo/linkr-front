@@ -71,7 +71,7 @@ export default function TimeLinePage() {
         setNewPosts([]);
       })
       .catch((err) =>
-        alert(
+        console.log(
           "An error occured while trying to fetch the posts, please refresh the page"
         )
       );
@@ -92,7 +92,7 @@ export default function TimeLinePage() {
       setLoadingForm(false);
     });
     promise.catch(() => {
-      alert("There was an error publishing your link");
+      console.log("There was an error publishing your link");
       setLoadingForm(false);
     });
   }
@@ -102,7 +102,7 @@ export default function TimeLinePage() {
       .get("/trending", config)
       .then((res) => setTrending(res.data))
       .catch((err) =>
-        alert("An error occurred while loading trending hashtags")
+        console.log("An error occurred while loading trending hashtags")
       );
   }
 
@@ -128,7 +128,7 @@ export default function TimeLinePage() {
         }
       })
       .catch((err) =>
-        alert("Error while getting new posts, please refresh the page")
+        console.log("Error while getting new posts, please refresh the page")
       );
   }
 

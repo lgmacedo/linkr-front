@@ -45,7 +45,7 @@ export default function UserPage() {
     getPosts();
     getTrending();
     checkFollow();
-  }, []);
+  }, [userIdSearch]);
 
   const config = {
     headers: {
@@ -61,7 +61,7 @@ export default function UserPage() {
       setHasMorePosts(true);
     });
     promise.catch((err) =>
-      alert(
+      console.log(
         "An error occured while trying to fetch the posts, please refresh the page"
       )
     );
@@ -72,7 +72,7 @@ export default function UserPage() {
       .get("/trending", config)
       .then((res) => setTrending(res.data))
       .catch((err) =>
-        alert("An error occurred while loading trending hashtags")
+        console.log("An error occurred while loading trending hashtags")
       );
   }
 
@@ -81,7 +81,7 @@ export default function UserPage() {
       .get(`/follows/${user.id}/${id}`, config)
       .then((res) => setFollow(res.data))
       .catch((err) =>
-        alert("An error occurred while trying to get followed users")
+        console.log("An error occurred while trying to get followed users")
       );
   }
 
@@ -96,7 +96,9 @@ export default function UserPage() {
       })
       .catch((err) => {
         console.log(err.response.data);
-        alert("An error occurred while trying to follow or unfollow a user");
+        console.log(
+          "An error occurred while trying to follow or unfollow a user"
+        );
         setDisabled(false);
       });
   }
@@ -173,7 +175,7 @@ export default function UserPage() {
                 />
               ))}
             </InfiniteScroll>
-            )}
+          )}
         </TimeLineContainer>
         <Trending trending={trending} />
       </Container>

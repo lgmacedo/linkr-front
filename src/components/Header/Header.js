@@ -90,6 +90,7 @@ export default function Header() {
   }
 
   function pageUser(id, username, picture) {
+    setSearchResults([]);
     const obj = { id, username, picture };
     setUserIdSearch(obj);
     navigate(`/user/${id}`);

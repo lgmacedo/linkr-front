@@ -53,7 +53,7 @@ export default function HashtagPage() {
       .get("/trending", config)
       .then((res) => setTrending(res.data))
       .catch((err) =>
-        alert("An error occurred while loading trending hashtags")
+        console.log("An error occurred while loading trending hashtags")
       );
   }
 
@@ -66,7 +66,7 @@ export default function HashtagPage() {
         setHasMorePosts(true);
       })
       .catch((err) =>
-        alert(
+        console.log(
           "An error occured while trying to fetch the posts, please refresh the page"
         )
       );
