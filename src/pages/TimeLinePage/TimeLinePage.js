@@ -138,7 +138,6 @@ export default function TimeLinePage() {
     setNewPostsCount(0);
   }
 
-
   function fetchOlderPosts() {
     const offset = page * 10;
 
@@ -171,6 +170,8 @@ export default function TimeLinePage() {
         console.log("Error while fetching posts. Please refresh the page.");
       });
   }
+
+  console.log(timeline);
 
   return (
     <>
@@ -226,18 +227,22 @@ export default function TimeLinePage() {
           )}
           {loading ? (
             <NoPosts>Loading...</NoPosts>
+          ) : timeline === "No followed found" ? (
+            <NoPosts data-test="message">
+              You don't follow anyone yet. Search for new friends!
+            </NoPosts>
           ) : timeline.length === 0 ? (
-            <NoPosts data-test="message">There are no posts yet</NoPosts>
+            <NoPosts data-test="message">
+              No posts found from your friends
+            </NoPosts>
           ) : (
             <InfiniteScroll
               pageStart={1}
               loadMore={fetchOlderPosts}
               hasMore={hasMorePosts}
-              loader={
-                <LoadingInfiniteScroll key="infinite" />
-              }
+              loader={<LoadingInfiniteScroll key="infinite" />}
             >
-              {timeline.map((post) => {
+              {timeline?.map((post) => {
                 return (
                   <Posts
                     key={post.id}
