@@ -15,6 +15,7 @@ import {
   CommentsContainer,
   Comment,
   NewComment,
+  countRepost
 } from "./styles";
 import { useContext, useRef } from "react";
 import { UserContext } from "../../contexts/UserContext";
@@ -25,6 +26,7 @@ import reactStringReplace from "react-string-replace";
 import Modal from "react-modal";
 import { AiOutlineComment } from "react-icons/ai";
 import { BsSend } from "react-icons/bs";
+import { FaRetweet } from 'react-icons/fa';
 
 export default function Posts({ post, getPosts, idPost }) {
   const {
@@ -40,6 +42,7 @@ export default function Posts({ post, getPosts, idPost }) {
     description,
     desc,
     commentscount,
+    countReposts
   } = post;
   const { user, setUserIdSearch } = useContext(UserContext);
   const [like, setLike] = useState("");
@@ -54,6 +57,8 @@ export default function Posts({ post, getPosts, idPost }) {
   const [commentsOpened, setCommentsOpened] = useState(false);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [openRetweetModal, setOpenRetweetModal] = useState(false);
+  const [countPost, setCountPost] = useState(countReposts);
   const editRef = useRef(null);
   const navigate = useNavigate();
 
@@ -231,6 +236,22 @@ export default function Posts({ post, getPosts, idPost }) {
     });
   }
 
+  function rePost(userId, postId){
+    const body = {userId, postId }
+    const promise = api.post("/repost", body, config)
+    promise
+      .then((res)=>{
+        setCountPost(res.data)
+        setOpenRetweetModal(false)
+      })
+      .catch((err) => {
+        alert(err.message)
+        setOpenRetweetModal(false)
+      });
+    setOpenRetweetModal(false)
+  }
+
+
   return (
     <>
       <Modal
@@ -341,6 +362,36 @@ export default function Posts({ post, getPosts, idPost }) {
                 data-test="tooltip"
               ></StyledTooltip>
             </div>
+            <FaRetweet onClick={() => setOpenRetweetModal(true)}/>
+            {openRetweetModal && (
+            <Modal isOpen={openRetweetModal} style={modalStyle}
+            appElement={document.getElementById("root")}>
+              <ModalContainer>
+                <div className="container">
+                  <span className="text">
+                    Do you want to re-post this link?
+                  </span>
+                  <div className="button-container">
+                    <button
+                      onClick={() => setOpenRetweetModal(false)}
+                      className="no"
+                      disabled={disabled}
+                    >
+                      No, cancel
+                    </button>
+                    <button
+                      className="yes"
+                      disabled={disabled}
+                      onClick={() => rePost(user.id, id)}
+                    >
+                      Yes, share!
+                    </button>
+                  </div>
+                </div>
+              </ModalContainer>
+            </Modal>
+            )}
+            <p> {countPost} re-post</p>
           </LeftSidePost>
           <RightSidePost>
             <Name data-test="username" onClick={() => searchUserId(userId)}>
