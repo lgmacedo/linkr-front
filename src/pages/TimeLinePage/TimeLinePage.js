@@ -154,7 +154,7 @@ export default function TimeLinePage() {
       .then((res) => {
         const newPostsData = res.data;
 
-        if (newPostsData.length === 0) {
+        if (newPostsData.length === 0 || res.data === "No followed found") {
           setHasMorePosts(false);
           return;
         }
