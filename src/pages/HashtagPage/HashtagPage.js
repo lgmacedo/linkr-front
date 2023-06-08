@@ -63,8 +63,7 @@ export default function HashtagPage() {
       .then((res) => {
         setLoading(false);
         setTimeline(res.data);
-        console.log(res.data);
-          setHasMorePosts(true);
+        setHasMorePosts(true);
       })
       .catch((err) =>
         alert(
@@ -74,7 +73,6 @@ export default function HashtagPage() {
   }
 
   function fetchOlderPosts() {
-    console.log('ola');
     const offset = page * 10;
 
     if (timeline?.length < 10) {
@@ -119,9 +117,7 @@ export default function HashtagPage() {
               pageStart={1}
               loadMore={fetchOlderPosts}
               hasMore={hasMorePosts}
-              loader={
-              <LoadingInfiniteScroll key="loading-infinite" />
-              }
+              loader={<LoadingInfiniteScroll key="loading-infinite" />}
             >
               {timeline.map((post) => (
                 <Posts

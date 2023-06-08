@@ -102,7 +102,6 @@ export default function UserPage() {
   }
 
   function fetchOlderPosts() {
-    console.log("ola");
     const offset = page * 10;
 
     if (timeline?.length < 10) {

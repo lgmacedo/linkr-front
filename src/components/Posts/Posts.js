@@ -39,6 +39,7 @@ export default function Posts({ post, getPosts, idPost }) {
     title,
     description,
     desc,
+    commentscount,
   } = post;
   const { user, setUserIdSearch } = useContext(UserContext);
   const [like, setLike] = useState("");
@@ -112,10 +113,7 @@ export default function Posts({ post, getPosts, idPost }) {
     }
   }, [openEditInput]);
 
-  useEffect(() => {
-    const promise = api.get(`/post/${idPost}/comments`, config);
-    promise.then((res) => setComments(res.data));
-  }, [newComment]);
+  useEffect(() => {}, [newComment]);
 
   function likePost() {
     const postId = idPost;
@@ -216,15 +214,30 @@ export default function Posts({ post, getPosts, idPost }) {
       { postId: idPost, comment: newComment },
       config
     );
-    promise.then(() => setNewComment(""));
+    promise.then((res) => {
+      setNewComment("");
+      getPosts();
+      getComments();
+    });
     promise.catch(
       "An error occurred while trying to comment. Please try again"
     );
   }
 
+  function getComments() {
+    const promise = api.get(`/post/${idPost}/comments`, config);
+    promise.then((res) => {
+      setComments(res.data);
+    });
+  }
+
   return (
     <>
-      <Modal isOpen={openModal} style={modalStyle} appElement={document.getElementById('root')}>
+      <Modal
+        isOpen={openModal}
+        style={modalStyle}
+        appElement={document.getElementById("root")}
+      >
         <ModalContainer openModal={openModal}>
           <div className="container">
             <span className="text">
@@ -312,9 +325,14 @@ export default function Posts({ post, getPosts, idPost }) {
             </p>
             <AiOutlineComment
               data-test="comment-btn"
-              onClick={() => setCommentsOpened((prevState) => !prevState)}
+              onClick={() => {
+                if(!commentsOpened){
+                  getComments();
+                }
+                setCommentsOpened((prevState) => !prevState);
+              }}
             />
-            <p data-test="comment-counter">{comments.length} comments</p>
+            <p data-test="comment-counter">{commentscount} comments</p>
             <div data-test="tooltip">
               <StyledTooltip
                 id={`tooltip-${idPost}`}

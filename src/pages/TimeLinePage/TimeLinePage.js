@@ -146,7 +146,6 @@ export default function TimeLinePage() {
       return;
     }
 
-    console.log(timeline);
     api
       .get("/timeline", {
         headers: config.headers,
@@ -170,8 +169,6 @@ export default function TimeLinePage() {
         console.log("Error while fetching posts. Please refresh the page.");
       });
   }
-
-  console.log(timeline);
 
   return (
     <>
