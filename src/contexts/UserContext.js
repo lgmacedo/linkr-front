@@ -10,7 +10,7 @@ export default function UserProvider({ children }) {
   const [userIdSearch, setUserIdSearch] = useState('')
 
   return (
-    <UserContext.Provider value={{ user, setUser, userIdSearch, setUserIdSearch }}>
+    <UserContext.Provider value={{ user, setUser, userIdSearch, setUserIdSearch}}>
       {children}
     </UserContext.Provider>
   );

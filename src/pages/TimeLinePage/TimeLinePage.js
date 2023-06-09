@@ -23,6 +23,8 @@ import ButtonMorePosts from "../../components/ButtonMorePosts";
 import useInterval from "use-interval";
 import InfiniteScroll from "react-infinite-scroller";
 import LoadingInfiniteScroll from "../../components/LoadingInfiniteScroll";
+import Repost from "../../components/Repost";
+import styled from "styled-components";
 
 export default function TimeLinePage() {
   const { user } = useContext(UserContext);
@@ -239,14 +241,25 @@ export default function TimeLinePage() {
               hasMore={hasMorePosts}
               loader={<LoadingInfiniteScroll key="infinite" />}
             >
-              {timeline?.map((post) => {
-                return (
+            {timeline?.map((post) => {
+              return (
+                <>
+                  {post.reposts.length > 0 && post.reposts[0].repostUsername!==null && 
+                  post.reposts.map((repost) => (
+                    <><Repost username={repost.repostUsername} />
+                    <Posts
+                      key={post.id}
+                      post={post}
+                      getPosts={getPosts}
+                      idPost={post.id} /></>
+                  ))}
                   <Posts
                     key={post.id}
                     post={post}
                     getPosts={getPosts}
                     idPost={post.id}
                   />
+                </>
                 );
               })}
             </InfiniteScroll>

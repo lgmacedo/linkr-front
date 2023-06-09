@@ -25,6 +25,7 @@ import reactStringReplace from "react-string-replace";
 import Modal from "react-modal";
 import { AiOutlineComment } from "react-icons/ai";
 import { BsSend } from "react-icons/bs";
+import { FaRetweet } from 'react-icons/fa';
 
 export default function Posts({ post, getPosts, idPost }) {
   const {
@@ -40,8 +41,9 @@ export default function Posts({ post, getPosts, idPost }) {
     description,
     desc,
     commentscount,
+    repostsCount
   } = post;
-  const { user, setUserIdSearch } = useContext(UserContext);
+  const { user, setUserIdSearch, setRepostData } = useContext(UserContext);
   const [like, setLike] = useState("");
   const [color, setColor] = useState("");
   const [count, setCount] = useState(likescount);
@@ -54,6 +56,8 @@ export default function Posts({ post, getPosts, idPost }) {
   const [commentsOpened, setCommentsOpened] = useState(false);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [countReposts, setCountReposts] = useState(repostsCount)
+  const [openRepostModal, setOpenRepostModal] = useState(false);
   const editRef = useRef(null);
   const navigate = useNavigate();
 
@@ -231,6 +235,21 @@ export default function Posts({ post, getPosts, idPost }) {
     });
   }
 
+  function sharePost(){
+    const postId = id
+    const username = user.username
+    const promise = api.post("/repost", {postId}, config)
+    promise
+      .then((res)=>{
+        setOpenRepostModal(false)
+        setCountReposts(res.data)
+      })
+      .catch((err)=>{
+        alert("An error occurred while trying to repost. Please try again")
+        setOpenRepostModal(false)
+      })
+  }
+
   return (
     <>
       <Modal
@@ -264,7 +283,6 @@ export default function Posts({ post, getPosts, idPost }) {
           </div>
         </ModalContainer>
       </Modal>
-
       <ContainerPost data-test="post">
         {user.id === userId && (
           <>
@@ -341,6 +359,40 @@ export default function Posts({ post, getPosts, idPost }) {
                 data-test="tooltip"
               ></StyledTooltip>
             </div>
+            <FaRetweet onClick={() => setOpenRepostModal(true)} data-test="repost-btn"/>
+            <Modal
+              isOpen={openRepostModal}
+              style={modalStyle}
+              appElement={document.getElementById("root")}
+            >
+              <ModalContainer openModal={openRepostModal}>
+                <div className="container">
+                  <span className="text">
+                    Do you want to re-post this link?
+                  </span>
+                  <div className="button-container">
+                    <button
+                      onClick={() => setOpenRepostModal(false)}
+                      className="no"
+                      disabled={disabled}
+                      data-test="cancel"
+                    >
+                      No, cancel
+                    </button>
+                    <button
+                      className="yes"
+                      onClick={sharePost}
+                      disabled={disabled}
+                      data-test="confirm"
+                    >
+                      Yes, share!
+                    </button>
+                  </div>
+                </div>
+              </ModalContainer>
+            </Modal>
+            <p data-test="repost-counter"> {countReposts} re-posts </p>
+
           </LeftSidePost>
           <RightSidePost>
             <Name data-test="username" onClick={() => searchUserId(userId)}>
