@@ -245,14 +245,8 @@ export default function TimeLinePage() {
               return (
                 <>
                   {post.reposts.length > 0 && post.reposts[0].repostUsername!==null && 
-                  post.reposts.map((repost) => (
-                    <><Repost username={repost.repostUsername} />
-                    <Posts
-                      key={post.id}
-                      post={post}
-                      getPosts={getPosts}
-                      idPost={post.id} /></>
-                  ))}
+                    <><Repost username={post.reposts[0].repostUsername} /></>
+                  }
                   <Posts
                     key={post.id}
                     post={post}
