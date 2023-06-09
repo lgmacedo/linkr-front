@@ -96,7 +96,7 @@ export default function UserPage() {
       })
       .catch((err) => {
         console.log(err.response.data);
-        console.log(
+        alert(
           "An error occurred while trying to follow or unfollow a user"
         );
         setDisabled(false);
