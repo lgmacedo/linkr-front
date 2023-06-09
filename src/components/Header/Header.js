@@ -162,13 +162,9 @@ export default function Header({ follow }) {
                   >
                     <img src={result.picture} />
                     <p>{result.username}</p>
-                    <Followed
-                      display={
-                        followedIds.includes(result.id) ? "inherit" : "none"
-                      }
-                    >
-                      • following
-                    </Followed>
+                    {followedIds.includes(result.id) && (
+                      <Followed>• following</Followed>
+                    )}
                   </SearchResultItem>
                 ))}
               </SearchResults>

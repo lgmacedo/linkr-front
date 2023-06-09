@@ -137,25 +137,16 @@ export default function UserPage() {
     <>
       <Header follow={follow}></Header>
       <Container>
-        {user.id !== Number(id) &&
-          loading === false &&
-          (follow.length === 0 ? (
-            <Follow
-              onClick={followAndUnfollow}
-              disabled={disabled}
-              data-test="follow-btn"
-            >
-              Follow
-            </Follow>
-          ) : (
-            <Unfollow
-              onClick={followAndUnfollow}
-              disabled={disabled}
-              data-test="follow-btn"
-            >
-              Unfollow
-            </Unfollow>
-          ))}
+        {user.id !== Number(id) && loading === false && (
+          <Follow
+            follow={follow}
+            onClick={followAndUnfollow}
+            disabled={disabled}
+            data-test="follow-btn"
+          >
+            {follow.length === 0 ? "Follow" : "Unfollow"}
+          </Follow>
+        )}
         <TimeLineContainer>
           <Box>
             <Image>
