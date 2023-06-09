@@ -244,7 +244,7 @@ export default function TimeLinePage() {
             {timeline?.map((post) => {
               return (
                 <>
-                  {post.reposts.length > 0 && post.reposts[0].repostUsername!==null && 
+                  {post.reposts && post.reposts[0].repostUsername!==null && 
                     <><Repost username={post.reposts[0].repostUsername} /></>
                   }
                   <Posts
