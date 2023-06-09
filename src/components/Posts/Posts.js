@@ -359,7 +359,7 @@ export default function Posts({ post, getPosts, idPost }) {
                 data-test="tooltip"
               ></StyledTooltip>
             </div>
-            <FaRetweet onClick={() => setOpenRepostModal(true)}/>
+            <FaRetweet onClick={() => setOpenRepostModal(true)} data-test="repost-btn"/>
             <Modal
               isOpen={openRepostModal}
               style={modalStyle}
@@ -391,7 +391,7 @@ export default function Posts({ post, getPosts, idPost }) {
                 </div>
               </ModalContainer>
             </Modal>
-            <p> {countReposts} re-posts </p>
+            <p data-test="repost-counter"> {countReposts} re-posts </p>
 
           </LeftSidePost>
           <RightSidePost>
