@@ -243,7 +243,6 @@ export default function Posts({ post, getPosts, idPost }) {
       .then((res)=>{
         setOpenRepostModal(false)
         setCountReposts(res.data)
-        setRepostData( {username, post, getPosts, idPost})
       })
       .catch((err)=>{
         alert("An error occurred while trying to repost. Please try again")
@@ -284,7 +283,6 @@ export default function Posts({ post, getPosts, idPost }) {
           </div>
         </ModalContainer>
       </Modal>
-
       <ContainerPost data-test="post">
         {user.id === userId && (
           <>
