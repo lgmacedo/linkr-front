@@ -211,5 +211,4 @@ export const Followed = styled.span`
   font-size: 19px;
   line-height: 23px;
   color: #c5c5c5;
-  display: ${(props) => props.display};
 `;

@@ -69,25 +69,9 @@ export const Follow = styled.button`
   position: absolute;
   height: 31px;
   width: 112px;
-  background-color: #1877f2;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  right: 0;
-  top: 47px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 16.8px;
-`;
-
-export const Unfollow = styled.button`
-  font-family: "Lato", sans-serif;
-  position: absolute;
-  height: 31px;
-  width: 112px;
-  background-color: #ffffff;
-  color: #1877f2;
+  background-color: ${(props) =>
+    props.follow.length === 0 ? "#1877f2" : "#ffffff"};
+  color: ${(props) => (props.follow.length === 0 ? "#ffffff" : "#1877f2")};
   border: none;
   border-radius: 5px;
   right: 0;
