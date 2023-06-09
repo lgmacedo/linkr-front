@@ -73,7 +73,7 @@ export default function TimeLinePage() {
         setNewPosts([]);
       })
       .catch((err) =>
-        console.log(
+        alert(
           "An error occured while trying to fetch the posts, please refresh the page"
         )
       );
@@ -94,7 +94,7 @@ export default function TimeLinePage() {
       setLoadingForm(false);
     });
     promise.catch(() => {
-      console.log("There was an error publishing your link");
+      alert("There was an error publishing your link");
       setLoadingForm(false);
     });
   }
