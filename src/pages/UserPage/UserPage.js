@@ -96,9 +96,7 @@ export default function UserPage() {
       })
       .catch((err) => {
         console.log(err.response.data);
-        alert(
-          "An error occurred while trying to follow or unfollow a user"
-        );
+        alert("An error occurred while trying to follow or unfollow a user");
         setDisabled(false);
       });
   }
@@ -137,7 +135,7 @@ export default function UserPage() {
     <>
       <Header follow={follow}></Header>
       <Container>
-        {user.id !== Number(id) && loading === false && (
+        {user.id !== Number(id) && (
           <Follow
             follow={follow}
             onClick={followAndUnfollow}
