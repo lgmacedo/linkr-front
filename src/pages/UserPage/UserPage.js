@@ -135,7 +135,7 @@ export default function UserPage() {
 
   return (
     <>
-      <Header></Header>
+      <Header follow={follow}></Header>
       <Container>
         {user.id !== Number(id) &&
           loading === false &&
