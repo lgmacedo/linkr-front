@@ -204,3 +204,12 @@ export const SearchResultItem = styled.div`
     background-color: #f2f2f2;
   }
 `;
+
+export const Followed = styled.span`
+  font-family: "Lato";
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 23px;
+  color: #c5c5c5;
+  display: ${(props) => props.display};
+`;

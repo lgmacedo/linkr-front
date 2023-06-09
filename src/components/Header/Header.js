@@ -17,15 +17,18 @@ import {
   InputResponsive,
   SearchResults,
   SearchResultItem,
+  Followed,
 } from "./style";
 
-export default function Header() {
+export default function Header({ follow }) {
   const { user, setUser, setUserIdSearch } = useContext(UserContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const profileRef = useRef(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [followedByUser, setFollowedByUser] = useState([]);
+  const [followedIds, setFollowedIds] = useState([]);
 
   const navigate = useNavigate();
 
@@ -35,6 +38,8 @@ export default function Header() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => getUserFollowed(), [follow]);
 
   const handleClickOutside = (event) => {
     if (
@@ -69,7 +74,8 @@ export default function Header() {
       const promise = api.post("/users", body, config);
       promise
         .then((res) => {
-          setSearchResults(res.data);
+          // setSearchResults(res.data);
+          formatSearchResults(res.data);
         })
         .catch((err) => {
           alert(err.message);
@@ -79,6 +85,22 @@ export default function Header() {
     }
   }
 
+  function formatSearchResults(res) {
+    const follows = [];
+    const search = [...res];
+
+    for (let i = 0; i < search.length; i++) {
+      followedByUser.forEach((followed) => {
+        if (search[i]?.id === followed.id) {
+          follows.push(search[i]);
+          search.splice(i, 1);
+        }
+      });
+    }
+
+    setSearchResults([...follows, ...search]);
+  }
+
   function logout() {
     const promise = api.post("/log-out", {}, config);
     promise.then(() => {
@@ -86,7 +108,7 @@ export default function Header() {
       setUser({});
       navigate("/");
     });
-    promise.catch(()=>alert("Error trying to log out. Please try again."));
+    promise.catch(() => alert("Error trying to log out. Please try again."));
   }
 
   function pageUser(id, username, picture) {
@@ -94,6 +116,22 @@ export default function Header() {
     const obj = { id, username, picture };
     setUserIdSearch(obj);
     navigate(`/user/${id}`);
+  }
+
+  function getUserFollowed() {
+    const ids = [];
+
+    api
+      .get(`/follows/${user.id}`, config)
+      .then((res) => {
+        setFollowedByUser(res.data);
+        res.data.forEach((followed) => ids.push(followed.id));
+      })
+      .catch((err) =>
+        alert("An error occurred while trying to get user's followed")
+      );
+
+    setFollowedIds(ids);
   }
 
   return (
@@ -124,6 +162,13 @@ export default function Header() {
                   >
                     <img src={result.picture} />
                     <p>{result.username}</p>
+                    <Followed
+                      display={
+                        followedIds.includes(result.id) ? "inherit" : "none"
+                      }
+                    >
+                      • following
+                    </Followed>
                   </SearchResultItem>
                 ))}
               </SearchResults>
